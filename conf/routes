@@ -3,10 +3,16 @@
 # ~~~~
 
 # Home page
+GET     /                           controllers.Application.index()
 GET     /home                       controllers.Application.index()
-GET     /airline                    controllers.Airline.index()
-GET     /airport                    controllers.Airport.index()
-GET     /route                      controllers.Route.index()
+GET     /airline                    controllers.AirlineController.index()
+GET     /airport                    controllers.AirportController.index()
+GET     /route                      controllers.RouteController.index()
+GET     /airline/:id/edit           controllers.AirlineController.edit(id: String)
+GET     /airline/:id/update         controllers.AirlineController.update(id: String)
+GET     /airline/:id/delete         controllers.AirlineController.delete(id: String)
+GET     /airline/create             controllers.AirlineController.create
+GET     /airline/save               controllers.AirlineController.save
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

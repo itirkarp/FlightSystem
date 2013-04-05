@@ -1,5 +1,22 @@
-@(message: String)
+@(airlines: List[Airline])
 
-@main("Welcome to EasyFly") {    
-    @message
+@main("Welcome to EasyFly") {
+    <div id="search">
+        <span>Search form here</span>
+        <a href=@routes.AirlineController.create() class="btn btn-primary pull-right">New Airline</a>
+    </div>
+    <table class="table table-striped" id="airlines">
+        <thead></thead>
+        <tbody>
+        <th>Airline ID</th><th>Airline Name</th><th></th><th></th>
+        @for(airline <- airlines) {
+            <tr>
+                <td>@airline.airln_id</td>
+                <td>@airline.airln_name</td>
+                <td><a href=@routes.AirlineController.edit(airline.airln_id)>Edit</a></td>
+                <td><a href=@routes.AirlineController.delete(airline.airln_id)>Delete</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
 }

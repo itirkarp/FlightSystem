@@ -5,6 +5,6 @@ import play.mvc.*;
 
 import views.html.*;
 
-public class RouteSegment extends Controller {      
+public class RouteSegmentController extends Controller {      
   
 }

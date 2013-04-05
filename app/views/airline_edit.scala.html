@@ -1,0 +1,20 @@
+@(airline: Airline, airlineForm: Form[Airline])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("EasyFly") {
+    @form(routes.AirlineController.update(airline.airln_id)) {
+        <div class="clearfix" id="airln_id_field">
+            <label for="airln_id">Airline ID</label>
+            <div class="input">
+                <input type="text" id="airln_id" name="airln_id" value=@airline.airln_id disabled="disabled">
+                <span class="help-inline"></span>
+                <span class="help-block"></span> 
+            </div>
+        </div>
+        @inputText(airlineForm("airln_name"), '_label -> "Airline Name") 
+        <input type="hidden" name="airln_id" value=@airline.airln_id>
+        <input type="submit" value="Edit">
+    }
+}
