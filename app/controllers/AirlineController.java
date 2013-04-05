@@ -30,13 +30,13 @@ public class AirlineController extends Controller {
     
     public static Result edit(String id) {
         Airline airline = Airline.find.ref(id);
-        return ok(airline_edit.render(airline, airlineForm.fill(airline)));
+        return ok(airline_edit.render(airlineForm.fill(airline)));
     }
 
     public static Result update(String id) {
         Form<Airline> filledForm = airlineForm.bindFromRequest();
         if (filledForm.hasErrors()) {
-            return badRequest(airline_edit.render(Airline.find.ref(id), airlineForm));
+            return badRequest(airline_edit.render(airlineForm));
         } else {
             Airline.update(filledForm.get().airln_id, filledForm.get().airln_name);
         }
