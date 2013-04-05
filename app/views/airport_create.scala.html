@@ -1,0 +1,12 @@
+@(airportForm: Form[Airport])
+
+@import helper._
+
+@main("EasyFly") {
+    @form(routes.AirportController.save()) {
+        @inputText(airportForm("airpt_id"), '_label -> "Airport ID") 
+        @inputText(airportForm("airpt_name"), '_label -> "Airport Name") 
+        @inputText(airportForm("country"), '_label -> "Country")
+        <input type="submit" value="Create">
+    }
+}
