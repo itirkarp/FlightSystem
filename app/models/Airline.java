@@ -9,8 +9,9 @@ import javax.persistence.*;
 public class Airline extends Model {
 
     @Id
+    @Required(message = "Airline ID is required.")
     public String airln_id;
-    @Required
+    @Required(message = "Airline name is required.")
     public String airln_name;
     public static Finder<String, Airline> find = new Finder(String.class, Airline.class);
 

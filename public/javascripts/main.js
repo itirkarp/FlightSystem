@@ -1,4 +1,4 @@
 $(document).ready(function(){
-    var active = document.location.pathname.replace("/","");
-    $("#" + active).addClass("active");
+    var parts = document.location.pathname.split("/");
+    $("#" + parts[1]).addClass("active");
 });

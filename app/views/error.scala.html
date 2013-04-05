@@ -1,0 +1,14 @@
+@(airlineForm: Form[Airline])
+
+@import helper._
+
+@if(flash.containsKey("error")) {
+    <div class="alert alert-error">
+        @flash.get("error")<br/>
+        @for((key, value) <- airlineForm.errors) {
+                @for(err <- value) {
+                    @err.message().toString()<br/>
+                }
+        }
+    </div>
+}

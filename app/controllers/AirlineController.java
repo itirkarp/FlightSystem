@@ -3,7 +3,9 @@ package controllers;
 import play.*;
 import play.mvc.*;
 import models.Airline;
+import play.data.*;
 import play.data.Form;
+import play.data.validation.*;
 import views.html.*;
 
 public class AirlineController extends Controller {
@@ -21,7 +23,8 @@ public class AirlineController extends Controller {
     public static Result save() {
         Form<Airline> filledForm = airlineForm.bindFromRequest();
         if (filledForm.hasErrors()) {
-            return badRequest(airline_create.render(airlineForm));
+            flash("error", "There were errors in the form:");
+            return badRequest(airline_create.render(filledForm));
         } else {
             Airline.create(filledForm.get());
         }
