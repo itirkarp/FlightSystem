@@ -13,8 +13,16 @@
             <tr>
                 <td>@airline.airln_id</td>
                 <td>@airline.airln_name</td>
-                <td><a href=@routes.AirlineController.edit(airline.airln_id)>Edit</a></td>
-                <td><a href=@routes.AirlineController.delete(airline.airln_id)>Delete</a></td>
+                <td>
+                    <a href=@routes.AirlineController.edit(airline.airln_id) class="btn btn-small">
+                        <i class="icon-pencil"></i> Edit
+                    </a>
+                </td>
+                <td>
+                    <a href=@routes.AirlineController.delete(airline.airln_id) class="btn btn-small">
+                        <i class="icon-remove"></i> Delete
+                    </a>
+                </td>
             </tr>
         }
         </tbody>

@@ -39,7 +39,9 @@ public class AirlineController extends Controller {
     public static Result update(String id) {
         Form<Airline> filledForm = airlineForm.bindFromRequest();
         if (filledForm.hasErrors()) {
-            return badRequest(airline_edit.render(airlineForm));
+            flash("error", "There were errors in the form. All fields are required.");
+            Airline airline = Airline.find.ref(id);
+            return badRequest(airline_edit.render(airlineForm.fill(airline)));
         } else {
             Airline.update(filledForm.get().airln_id, filledForm.get().airln_name);
         }

@@ -1,20 +1,28 @@
 @(airlineForm: Form[Airline])
 
 @import helper._
-@import helper.twitterBootstrap._
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) }
 
 @main("EasyFly") {
-    @form(routes.AirlineController.update(airlineForm.get().airln_id)) {
-        <div class="clearfix" id="airln_id_field">
-            <label for="airln_id">Airline ID</label>
-            <div class="input">
-                <input type="text" id="airln_id" name="airln_id" value=@airlineForm.get().airln_id disabled="disabled">
-                <span class="help-inline"></span>
-                <span class="help-block"></span> 
-            </div>
+    @views.html.error(airlineForm)
+    <div class="row-fluid">
+        <div class="span6">
+            <h2>Edit Airline</h2>
+            @form(routes.AirlineController.update(airlineForm.get().airln_id)) {
+                <div class="clearfix">
+                    <label for="airln_id">Airline ID</label>
+                    <div class="input">
+                        <input type="text" name="airln_id" value=@airlineForm.get().airln_id disabled="disabled">
+                    </div>
+                </div>
+                @inputText(airlineForm("airln_name"), '_label -> "Airline Name") 
+                <input type="hidden" name="airln_id" value=@airlineForm.get().airln_id>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <a href=@routes.AirlineController.index() class="btn">Cancel</a>
+                </div>
+            }
         </div>
-        @inputText(airlineForm("airln_name"), '_label -> "Airline Name") 
-        <input type="hidden" name="airln_id" value=@airlineForm.get().airln_id>
-        <input type="submit" value="Save">
-    }
+        <div class="span6"></div>
+    </div>            
 }

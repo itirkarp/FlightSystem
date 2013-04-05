@@ -14,8 +14,16 @@
                 <td>@airport.airpt_id</td>
                 <td>@airport.airpt_name</td>
                 <td>@airport.country</td>
-                <td><a href=@routes.AirportController.edit(airport.airpt_id)>Edit</a></td>
-                <td><a href=@routes.AirportController.delete(airport.airpt_id)>Delete</a></td>
+                <td>
+                    <a href=@routes.AirportController.edit(airport.airpt_id) >
+                        <i class="icon-pencil"></i> Edit
+                    </a>
+                </td>
+                <td>
+                    <a href=@routes.AirportController.delete(airport.airpt_id) >
+                        <i class="icon-remove"></i> Delete
+                    </a>
+                </td>
             </tr>
         }
         </tbody>
