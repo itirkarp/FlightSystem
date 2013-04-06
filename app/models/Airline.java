@@ -24,7 +24,7 @@ public class Airline extends Model {
         return find.all();
     }
 
-    public static void create(Airline airline) {
+    public static void create(Airline airline) throws PersistenceException {
         airline.save();
     }
 

@@ -1,5 +1,36 @@
-@(message: String)
+@(routeList: List[Route])
 
-@main("EasyFly") {    
-    @message
+@main("EasyFly") {
+    <div id="search">
+        <span>Search form here</span>
+        <a href=@routes.RouteController.create() class="btn btn-primary pull-right">New Route</a>
+    </div>
+    <table class="table table-striped" id="data-table">
+        <thead></thead>
+        <tbody>
+        <th>Route ID</th><th>Source</th><th>Destination</th><th>Departure</th>
+        <th>Arrival</th><th>Airline ID</th><th>Day</th><th></th><th></th>
+        @for(route <- routeList) {
+            <tr>
+                <td>@route.route_id</td>
+                <td>@route.airpt_id_from</td>
+                <td>@route.airpt_id_to</td>
+                <td>@route.dep_time</td>
+                <td>@route.arr_time</td>
+                <td>@route.airln_id</td>
+                <td>@route.day_no</td>
+                <td>
+                    <a href="">
+                        <i class="icon-pencil"></i> Edit
+                    </a>
+                </td>
+                <td>
+                    <a href="">
+                        <i class="icon-remove"></i> Delete
+                    </a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
 }

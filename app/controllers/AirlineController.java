@@ -1,5 +1,6 @@
 package controllers;
 
+import javax.persistence.PersistenceException;
 import play.*;
 import play.mvc.*;
 import models.Airline;
@@ -26,7 +27,16 @@ public class AirlineController extends Controller {
             flash("error", "There were errors in the form:");
             return badRequest(airline_create.render(filledForm));
         } else {
-            Airline.create(filledForm.get());
+            try {
+                Airline.create(filledForm.get());
+            } catch(PersistenceException e) {
+                if (e.getMessage().contains("AIRL_PK")) {
+                    flash("error", "Cannot create airline. This airline already exists.");
+                } else {
+                    flash("error", "Cannot create airline. A database error occured.");
+                }
+                return badRequest(airline_create.render(filledForm));
+            }
         }
         return ok(airline_index.render(Airline.all()));
     }

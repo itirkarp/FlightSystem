@@ -3,24 +3,27 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
-GET     /home                       controllers.Application.index()
+GET     /                           controllers.Application.index
+GET     /home                       controllers.Application.index
 
-GET     /airline                    controllers.AirlineController.index()
+GET     /airline                    controllers.AirlineController.index
 GET     /airline/:id/edit           controllers.AirlineController.edit(id: String)
 GET     /airline/:id/update         controllers.AirlineController.update(id: String)
 GET     /airline/:id/delete         controllers.AirlineController.delete(id: String)
 GET     /airline/create             controllers.AirlineController.create
 GET     /airline/save               controllers.AirlineController.save
 
-GET     /airport                    controllers.AirportController.index()
+GET     /airport                    controllers.AirportController.index
 GET     /airport/save               controllers.AirportController.save
 GET     /airport/create             controllers.AirportController.create
 GET     /airport/:id/edit           controllers.AirportController.edit(id: String)
 GET     /airport/:id/update         controllers.AirportController.update(id: String)
 GET     /airport/:id/delete         controllers.AirportController.delete(id: String)
 
-GET     /route                      controllers.RouteController.index()
+GET     /route                      controllers.RouteController.index
+GET     /route/create               controllers.RouteController.create
+GET     /route/:id/edit             controllers.RouteController.edit(id: String)
+GET     /route/:id/delete           controllers.RouteController.delete(id: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
