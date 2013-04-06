@@ -22,7 +22,8 @@ public class AirportController extends Controller {
     public static Result save() {
         Form<Airport> filledForm = airportForm.bindFromRequest();
         if (filledForm.hasErrors()) {
-            return badRequest(airport_create.render(airportForm));
+            flash("error", "There were errors in the form:");
+            return badRequest(airport_create.render(filledForm));
         } else {
             Airport.create(filledForm.get());
         }
@@ -31,13 +32,17 @@ public class AirportController extends Controller {
     
     public static Result edit(String id) {
         Airport airport = Airport.find.ref(id);
+        Logger.error("##################");
+        Logger.error(airport.airpt_id);
         return ok(airport_edit.render(airportForm.fill(airport)));
     }
     
     public static Result update(String id) {
         Form<Airport> filledForm = airportForm.bindFromRequest();
         if (filledForm.hasErrors()) {
-            return badRequest(airport_edit.render(airportForm));
+            flash("error", "There were errors in the form. All fields are required.");
+            Airport airport = Airport.find.ref(id);
+            return badRequest(airport_edit.render(airportForm.fill(airport)));
         } else {
             Airport.update(filledForm.get().airpt_id, filledForm.get().airpt_name,filledForm.get().country );
         }

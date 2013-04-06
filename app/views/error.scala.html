@@ -1,11 +1,11 @@
-@(airlineForm: Form[Airline])
+@(errorForm: Form[_ <: Object])
 
 @import helper._
 
 @if(flash.containsKey("error")) {
     <div class="alert alert-error">
         @flash.get("error")<br/>
-        @for((key, value) <- airlineForm.errors) {
+        @for((key, value) <- errorForm.errors) {
                 @for(err <- value) {
                     @err.message().toString()<br/>
                 }

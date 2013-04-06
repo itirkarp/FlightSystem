@@ -10,10 +10,12 @@ import play.db.ebean.Model;
 public class Airport extends Model{
 
     @Id
+    @Required(message = "Airport Id is required.")
+    @MaxLength(value = 3, message = "Airport Id  cannot be more than 3 characters")
     public String airpt_id;
-    @Required
+    @Required(message = "Airport name is required.")
     public String airpt_name;
-    @Required
+    @Required(message = "Country is required.")
     public String country;
     public static Model.Finder<String, Airport> find = new Model.Finder(String.class, Airport.class);
 
