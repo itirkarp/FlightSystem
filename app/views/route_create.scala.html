@@ -1,0 +1,27 @@
+@(routeForm: Form[Route])
+
+@import helper._
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) }
+
+@main("EasyFly") {
+    @views.html.error(routeForm)
+    <div class="row-fluid">
+        <div class="span6">
+            <h2>Add a new Route</h2>
+            @form(routes.RouteController.save()) {
+                @inputText(routeForm("route_id"), '_label -> "Route ID") 
+                @inputText(routeForm("airpt_id_from"), '_label -> "Source Airport") 
+                @inputText(routeForm("airpt_id_to"), '_label -> "Destination Airport") 
+                @inputText(routeForm("dep_time"), '_label -> "Departure Time (24 hour format)")
+                @inputText(routeForm("arr_time"), '_label -> "Arrival Time (24 hour format)") 
+                @inputText(routeForm("airln_id"), '_label -> "Airline ID")
+                @inputText(routeForm("day_no"), '_label -> "Day Number (1 to 7)")
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <a href=@routes.RouteController.index() class="btn">Cancel</a>
+                </div>
+            }
+        </div>
+        <div class="span6"></div>
+    </div>
+}
