@@ -31,7 +31,21 @@ public class RouteController extends Controller {
     
     public static Result edit(String id) {
         Route route = Route.find.ref(id);
-        return ok();
+        return ok(route_edit.render(route, routeForm.fill(route)));
+    }
+
+    public static Result update(String id) {
+        Form<Route> filledForm = routeForm.bindFromRequest();
+        if (filledForm.hasErrors()) {
+            flash("error", "There were errors in the form:");
+            Route route = Route.find.ref(id);
+            return badRequest(route_edit.render(route, filledForm));
+        } else {
+            Route route = filledForm.get();
+            Route.update(route.route_id, route.arr_time, route.airpt_id_to, 
+                    route.dep_time, route.airpt_id_from, route.airln_id, route.day_no);
+        }
+        return ok(route_index.render(Route.all()));
     }
 
     public static Result delete(String id) {

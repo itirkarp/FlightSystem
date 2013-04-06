@@ -49,7 +49,7 @@ public class AirlineController extends Controller {
     public static Result update(String id) {
         Form<Airline> filledForm = airlineForm.bindFromRequest();
         if (filledForm.hasErrors()) {
-            flash("error", "There were errors in the form. All fields are required.");
+            flash("error", "There were errors in the form:");
             Airline airline = Airline.find.ref(id);
             return badRequest(airline_edit.render(airline, filledForm));
         } else {

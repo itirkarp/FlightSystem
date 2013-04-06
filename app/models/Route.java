@@ -46,9 +46,15 @@ public class Route extends Model {
         route.save();
     }
 
-    public static void update(String airln_id, String airln_name) {
-//        Route airline = find.ref(airln_id);
-//        airline.airln_name = airln_name;
-//        airline.update();
+    public static void update(String route_id, int arr_time, String airpt_id_to, 
+                    int dep_time, String airpt_id_from, String airln_id, int day_no) {
+        Route route = find.ref(route_id);
+        route.arr_time = arr_time;
+        route.airpt_id_to = airpt_id_to;
+        route.dep_time = dep_time;
+        route.airpt_id_from = airpt_id_from;
+        route.airln_id = airln_id;
+        route.day_no = day_no;
+        route.update();
     }
 }

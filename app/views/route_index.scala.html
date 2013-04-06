@@ -20,12 +20,12 @@
                 <td>@route.airln_id</td>
                 <td>@route.day_no</td>
                 <td>
-                    <a href="">
+                    <a href=@routes.RouteController.edit(route.route_id)>
                         <i class="icon-pencil"></i> Edit
                     </a>
                 </td>
                 <td>
-                    <a href="">
+                    <a href=@routes.RouteController.delete(route.route_id)>
                         <i class="icon-remove"></i> Delete
                     </a>
                 </td>
