@@ -43,7 +43,7 @@ public class AirlineController extends Controller {
     
     public static Result edit(String id) {
         Airline airline = Airline.find.ref(id);
-        return ok(airline_edit.render(airlineForm.fill(airline)));
+        return ok(airline_edit.render(airline, airlineForm.fill(airline)));
     }
 
     public static Result update(String id) {
@@ -51,7 +51,7 @@ public class AirlineController extends Controller {
         if (filledForm.hasErrors()) {
             flash("error", "There were errors in the form. All fields are required.");
             Airline airline = Airline.find.ref(id);
-            return badRequest(airline_edit.render(airlineForm.fill(airline)));
+            return badRequest(airline_edit.render(airline, filledForm));
         } else {
             Airline.update(filledForm.get().airln_id, filledForm.get().airln_name);
         }
