@@ -36,6 +36,9 @@ public class Route extends Model {
     @Min(value = 1, message = "Day number cannot be less than 1.")
     public Integer day_no;
 
+    @OneToMany(mappedBy = "route")
+    public List<RouteSegment> segments;
+    
     public static Finder<String, Route> find = new Finder(String.class, Route.class);
 
     public static List<Route> all() {
@@ -57,4 +60,5 @@ public class Route extends Model {
         route.day_no = day_no;
         route.update();
     }
+
 }
