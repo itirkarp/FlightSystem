@@ -12,7 +12,7 @@
         <th>Arrival</th><th>Airline ID</th><th>Day</th><th></th><th></th>
         @for(route <- routeList) {
             <tr>
-                <td><a class="show-segment" href="javascript:void(0);"><i class="icon-arrow-down"></i>Show Segments</a></td>
+                <td><a id=@route.route_id.concat("-show-segment") href="javascript:void(0);"><i class="icon-arrow-down"></i>Show Segments</a></td>
                 <td>@route.route_id</td>
                 <td>@route.airpt_id_from</td>
                 <td>@route.airpt_id_to</td>
@@ -30,8 +30,9 @@
                 </td>
             </tr>
             @for(segment <- route.segments) {
-                <tr>
-                    <td>Segment:</td>
+                <tr id=@route.route_id.concat("-segment") class="hide">
+                    <th>Segment Details:</th>
+                    <td></td>
                     <td>@segment.airpt_id_from</td>
                     <td>@segment.airpt_id_to</td>
                     <td>@segment.dep_time</td>
