@@ -1,5 +1,9 @@
 package controllers;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.HashMap;
 import javax.persistence.PersistenceException;
 import models.Airport;
 import play.*;
@@ -11,6 +15,12 @@ import views.html.*;
 public class AirportController extends Controller {
 
     static Form<Airport> airportForm = Form.form(Airport.class);
+    static final HashMap<String, String> errorMessages = new HashMap<String, String>() {
+        {
+            put("ORA-20001", "Cannot delete airport. A route exists for this airport.");
+            put("AIRP_PK", "Cannot create airport. This Airport already exists.");
+        }
+    };
 
     public static Result index() {
         return ok(airport_index.render(Airport.all()));
@@ -59,7 +69,21 @@ public class AirportController extends Controller {
     }
 
     public static Result delete(String airpt_id) {
-        Airport.find.ref(airpt_id).delete();
+        try {
+            deleteAirport(airpt_id);
+        } catch (SQLException e) {
+            flash("error", errorMessages.get(e.getMessage().substring(0, 9)));
+        }
         return ok(airport_index.render(Airport.all()));
+    }
+
+    public static void deleteAirport(String airpt_id) throws SQLException {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        connection = play.db.DB.getConnection();
+        String storedProc = "{call delete_airport(?)}";
+        callableStatement = connection.prepareCall(storedProc);
+        callableStatement.setString(1, airpt_id);
+        callableStatement.executeUpdate();
     }
 }

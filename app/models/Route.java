@@ -13,14 +13,14 @@ public class Route extends Model {
     @MaxLength(value = 5, message = "Route ID cannot be more than 5 characters.")
     public String route_id;
     @Required(message = "Arrival time is required.")
-    @Max(value = 2400, message = "Arrival time canot be more than 2400.")
+    @Max(value = 2400, message = "Arrival time cannot be more than 2400.")
     @Min(value = 0, message = "Arrival time cannot be less then 0.")
     public Integer arr_time;
     @Required(message = "Destination airport is required.")
     @MaxLength(value = 3, message = "Destination airport cannot be more than 3 characters.")
     public String airpt_id_to;
     @Required(message = "Departure time is required.")
-    @Max(value = 2400, message = "Departure time canot be more than 2400.")
+    @Max(value = 2400, message = "Departure time cannot be more than 2400.")
     @Min(value = 0, message = "Departure time cannot be less then 0.")
     public Integer dep_time;
     public Integer overbook_f;

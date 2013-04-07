@@ -11,5 +11,5 @@ begin
   delete from airport where airpt_id = airpt_id;
 exception
    when child_exists  then
-      raise_application_error(-20001, ': Delete airport failed. '); 
+      raise_application_error(-20001, ': Cannot delete airport. A route exists for this airport.'); 
 end;
