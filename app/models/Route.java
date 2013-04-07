@@ -9,32 +9,32 @@ import javax.persistence.*;
 public class Route extends Model {
 
     @Id
-//    @Required(message = "Route ID is required.")
-//    @MaxLength(value = 5, message = "Route ID cannot be more than 5 characters.")
+    @Required(message = "Route ID is required.")
+    @MaxLength(value = 5, message = "Route ID cannot be more than 5 characters.")
     public String route_id;
-//    @Required(message = "Arrival time is required.")
-//    @Max(value = 9999, message = "Arrival time cannot be more than 4 characters.")
-    public int arr_time;
-//    @Required(message = "Destination airport is required.")
-//    @MaxLength(value = 3, message = "Destination airport cannot be more than 3 characters.")
+    @Required(message = "Arrival time is required.")
+    @Max(value = 2400, message = "Arrival time canot be more than 2400.")
+    @Min(value = 0, message = "Arrival time cannot be less then 0.")
+    public Integer arr_time;
+    @Required(message = "Destination airport is required.")
+    @MaxLength(value = 3, message = "Destination airport cannot be more than 3 characters.")
     public String airpt_id_to;
-//    @Required(message = "Departure time is required.")
-//    @Max(value = 9999, message = "Departure time cannot be more than 4 characters.")
-    public int dep_time;
-//    @Max(value = 999, message = "**************")
-    public int overbook_f;
-//    @Max(value = 999, message = "^^^^^^^^^^^^^^")
-    public int overbook_i;
-//    @Required(message = "Source airport is required.")
-//    @MaxLength(value = 3, message = "Source airport cannot be more than 3 characters.")
+    @Required(message = "Departure time is required.")
+    @Max(value = 2400, message = "Departure time canot be more than 2400.")
+    @Min(value = 0, message = "Departure time cannot be less then 0.")
+    public Integer dep_time;
+    public Integer overbook_f;
+    public Integer overbook_i;
+    @Required(message = "Source airport is required.")
+    @MaxLength(value = 3, message = "Source airport cannot be more than 3 characters.")
     public String airpt_id_from;
-//    @Required(message = "Airline ID is required.")
-//    @MaxLength(value = 2, message = "Airline ID cannot be more than 2 characters.")
+    @Required(message = "Airline ID is required.")
+    @MaxLength(value = 2, message = "Airline ID cannot be more than 2 characters.")
     public String airln_id;
-//    @Required(message = "Day number is required.")
-//    @Max(value = 7, message = "Day number cannot be more than 7.")
-//    @Min(value = 1, message = "Day number cannot be less than 1.")
-    public int day_no;
+    @Required(message = "Day number is required.")
+    @Max(value = 7, message = "Day number cannot be more than 7.")
+    @Min(value = 1, message = "Day number cannot be less than 1.")
+    public Integer day_no;
 
     public static Finder<String, Route> find = new Finder(String.class, Route.class);
 
