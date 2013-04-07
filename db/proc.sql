@@ -19,3 +19,12 @@ exception
    when child_exists then
       raise_application_error(-20001, ': Cannot delete airport. A route exists for this airport.'); 
 end;
+
+/
+
+create or replace trigger delete_route_seg
+after delete on route
+for each row
+begin
+  delete from route_seg where route_id = :old.route_id;
+end;
