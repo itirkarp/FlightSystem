@@ -25,7 +25,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href=@routes.RouteController.delete(route.route_id)>
+                    <a href="" path=@routes.RouteController.delete(route.route_id) role="button" data-toggle="modal" data-target="#delete-modal" class="delete-link">
                         <i class="icon-remove"></i> Delete
                     </a>
                 </td>
@@ -33,4 +33,5 @@
         }
         </tbody>
     </table>
+    @views.html.delete_confirmation(routes.RouteController.index())
 }

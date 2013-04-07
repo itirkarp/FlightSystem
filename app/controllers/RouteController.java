@@ -50,7 +50,7 @@ public class RouteController extends Controller {
 
     public static Result delete(String id) {
         Route.find.ref(id).delete();
-        return ok();
+        return ok(route_index.render(Route.all()));
     }
     
     public static Result save() {
