@@ -38,3 +38,7 @@ h1 {
 #data-table {
     margin-top: 10%;
 }
+
+.hide {
+    display: none;
+}
