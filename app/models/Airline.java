@@ -10,8 +10,10 @@ public class Airline extends Model {
 
     @Id
     @Required(message = "Airline ID is required.")
+    @MaxLength(value = 2, message = "Airline Id cannot be more than 2 characters")
     public String airln_id;
     @Required(message = "Airline name is required.")
+    @MaxLength(value = 30, message = "Airline name cannot be more than 30 characters")
     public String airln_name;
     public static Finder<String, Airline> find = new Finder(String.class, Airline.class);
 

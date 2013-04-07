@@ -1,5 +1,9 @@
 package controllers;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.HashMap;
 import javax.persistence.PersistenceException;
 import play.*;
 import play.mvc.*;
@@ -12,6 +16,12 @@ import views.html.*;
 public class AirlineController extends Controller {
 
     static Form<Airline> airlineForm = Form.form(Airline.class);
+    static final HashMap<String, String> errorMessages = new HashMap<String, String>() {
+        {
+            put("ORA-20002", "Cannot delete airline. A route exists for this airline.");
+            put("AIRL_PK", "Cannot create airline. This airline already exists.");
+        }
+    };
 
     public static Result index() {
         return ok(airline_index.render(Airline.all()));
@@ -59,7 +69,21 @@ public class AirlineController extends Controller {
     }
 
     public static Result delete(String airln_id) {
-        Airline.find.ref(airln_id).delete();
+        try {
+            deleteAirline(airln_id);
+        } catch (SQLException e) {
+            flash("error", errorMessages.get(e.getMessage().substring(0, 9)));
+        }
         return ok(airline_index.render(Airline.all()));
+    }
+    
+     public static void deleteAirline(String airln_id) throws SQLException {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        connection = play.db.DB.getConnection();
+        String storedProc = "{call delete_airline(?)}";
+        callableStatement = connection.prepareCall(storedProc);
+        callableStatement.setString(1, airln_id);
+        callableStatement.executeUpdate();
     }
 }

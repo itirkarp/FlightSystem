@@ -1,6 +1,7 @@
 @(airlines: List[Airline])
 
 @main("EasyFly") {
+    @views.html.error()
     <div id="search">
         <span>Search form here</span>
         <a href=@routes.AirlineController.create() class="btn btn-primary pull-right">New Airline</a>
