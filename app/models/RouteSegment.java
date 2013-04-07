@@ -1,6 +1,5 @@
 package models;
 
-import com.avaje.ebean.validation.Range;
 import java.util.*;
 import play.db.ebean.*;
 import play.data.validation.Constraints.*;
@@ -10,15 +9,14 @@ import javax.persistence.*;
 @Table(name = "route_seg")
 public class RouteSegment extends Model {
 
-    @Required
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public int seg_no;
+    @EmbeddedId
+    public RouteSegmentPK primary_key;
     @Required(message = "Arrival time is required.")
 //    @Range(min = 0, max = 2400, message = "Time must be between 0000 and 2400")
-    public int arr_time;
+    public Integer arr_time;
     @Required(message = "Departure time is required.")
 //    @Range(min = 0, max = 2400, message = "Time must be between 0000 and 2400")
-    public int dep_time;
+    public Integer dep_time;
     @Required(message = "Destination airport is required.")
     @MaxLength(value = 3, message = "Destination airport cannot be more than 3 characters.")
     public String airpt_id_to;
@@ -26,8 +24,8 @@ public class RouteSegment extends Model {
     @MaxLength(value = 3, message = "Source airport cannot be more than 3 characters.")
     public String airpt_id_from;
     
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="route_id")
+    @ManyToOne
+    @JoinColumn(name="route_id", insertable = false, updatable = false)
     public Route route;
     
     public static Finder<String, RouteSegment> find = new Finder(String.class, RouteSegment.class);
@@ -36,8 +34,18 @@ public class RouteSegment extends Model {
         return find.all();
     }
 
-    public static void create(RouteSegment routeSegment) {
-        routeSegment.save();
+    public static void create(Integer arr_time, Integer dep_time, String airpt_id_to, String airpt_id_from, Route route) {
+        RouteSegment segment = new RouteSegment(arr_time, dep_time, airpt_id_to, airpt_id_from, route);
+        segment.primary_key = new RouteSegmentPK(route.route_id, 1);
+        segment.save();
+    }
+
+    private RouteSegment(Integer arr_time, Integer dep_time, String airpt_id_to, String airpt_id_from, Route route) {
+        this.arr_time = arr_time;
+        this.dep_time = dep_time;
+        this.airpt_id_from = airpt_id_from;
+        this.airpt_id_to = airpt_id_to;
+        this.route = route;
     }
 
 }

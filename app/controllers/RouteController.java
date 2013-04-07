@@ -3,6 +3,7 @@ package controllers;
 import java.util.HashMap;
 import javax.persistence.PersistenceException;
 import models.Route;
+import models.RouteSegment;
 import play.*;
 import play.data.Form;
 import play.mvc.*;
@@ -60,7 +61,12 @@ public class RouteController extends Controller {
             return badRequest(route_create.render(filledForm));
         } else {
             try {
-                Route.create(filledForm.get());
+                // TODO: wrap this in a transaction
+                Route route = filledForm.get();
+                route.overbook_f = 0;
+                route.overbook_i = 0;
+                Route.create(route);
+                RouteSegment.create(route.arr_time, route.dep_time, route.airpt_id_to, route.airpt_id_from, route);
             } catch(PersistenceException e) {
                 String[] temp = e.getMessage().split("S1784498.");
                 if (temp.length >1 ) {

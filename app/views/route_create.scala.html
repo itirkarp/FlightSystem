@@ -4,11 +4,11 @@
 @implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) }
 
 @main("EasyFly") {
-    @views.html.errorForm(routeForm)
+    @views.html.error(routeForm)
+    @form(routes.RouteController.save()) {
     <div class="row-fluid">
         <div class="span6">
             <h2>Add a new Route</h2>
-            @form(routes.RouteController.save()) {
                 @inputText(routeForm("route_id"), '_label -> "Route ID") 
                 @inputText(routeForm("airpt_id_from"), '_label -> "Source Airport") 
                 @inputText(routeForm("airpt_id_to"), '_label -> "Destination Airport") 
@@ -16,12 +16,38 @@
                 @inputText(routeForm("arr_time"), '_label -> "Arrival Time (24 hour format)") 
                 @inputText(routeForm("airln_id"), '_label -> "Airline ID")
                 @inputText(routeForm("day_no"), '_label -> "Day Number (1 to 7)")
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                    <a href=@routes.RouteController.index() class="btn">Cancel</a>
-                </div>
-            }
         </div>
-        <div class="span6"></div>
+        <div class="span6">
+            <h2>Route Segment Details</h2>
+            <div class="clearfix">
+                <label for="segment.airpt_id_from">Source Airport</label>
+                <div class="input">
+                    <input type="text" name="segment.airpt_id_from" id="segment.airpt_id_from" disabled="disabled">
+                </div>
+            </div>
+            <div class="clearfix">
+                <label for="segment.airpt_id_to">Destination Airport</label>
+                <div class="input">
+                    <input type="text" name="segment.airpt_id_to" id="segment.airpt_id_to" disabled="disabled">
+                </div>
+            </div>
+            <div class="clearfix">
+                <label for="segment.dep_time">Departure Time</label>
+                <div class="input">
+                    <input type="text" name="segment.dep_time" id="segment.dep_time" disabled="disabled">
+                </div>
+            </div>
+            <div class="clearfix">
+                <label for="segment.arr_time">Arrival Time</label>
+                <div class="input">
+                    <input type="text" name="segment.arr_time" id="segment.arr_time" disabled="disabled">
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save changes</button>
+        <a href=@routes.RouteController.index() class="btn">Cancel</a>
+    </div>
+    }
 }
