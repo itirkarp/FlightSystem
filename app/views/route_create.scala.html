@@ -4,7 +4,7 @@
 @implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) }
 
 @main("EasyFly") {
-    @views.html.error(routeForm)
+    @views.html.errorForm(routeForm)
     @form(routes.RouteController.save()) {
     <div class="row-fluid">
         <div class="span6">
