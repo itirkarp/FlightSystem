@@ -1,5 +1,6 @@
 package controllers;
 
+import javax.persistence.PersistenceException;
 import models.Airport;
 import play.*;
 import play.data.Form;
@@ -14,29 +15,37 @@ public class AirportController extends Controller {
     public static Result index() {
         return ok(airport_index.render(Airport.all()));
     }
-    
+
     public static Result create() {
         return ok(airport_create.render(airportForm));
     }
-    
+
     public static Result save() {
         Form<Airport> filledForm = airportForm.bindFromRequest();
         if (filledForm.hasErrors()) {
             flash("error", "There were errors in the form:");
             return badRequest(airport_create.render(filledForm));
         } else {
-            Airport.create(filledForm.get());
+            try {
+                Airport.create(filledForm.get());
+            } catch (PersistenceException e) {
+                if (e.getMessage().contains("AIRP_PK")) {
+                    flash("error", "Cannot create airport. This Airport already exists.");
+                } else {
+                    flash("error", "Cannot create airport. A database error occured.");
+                }
+                return badRequest(airport_create.render(filledForm));
+            }
         }
         return ok(airport_index.render(Airport.all()));
+
     }
-    
+
     public static Result edit(String id) {
         Airport airport = Airport.find.ref(id);
-        Logger.error("##################");
-        Logger.error(airport.airpt_id);
         return ok(airport_edit.render(airportForm.fill(airport)));
     }
-    
+
     public static Result update(String id) {
         Form<Airport> filledForm = airportForm.bindFromRequest();
         if (filledForm.hasErrors()) {
@@ -44,11 +53,11 @@ public class AirportController extends Controller {
             Airport airport = Airport.find.ref(id);
             return badRequest(airport_edit.render(airportForm.fill(airport)));
         } else {
-            Airport.update(filledForm.get().airpt_id, filledForm.get().airpt_name,filledForm.get().country );
+            Airport.update(filledForm.get().airpt_id, filledForm.get().airpt_name, filledForm.get().country);
         }
         return ok(airport_index.render(Airport.all()));
     }
-    
+
     public static Result delete(String airpt_id) {
         Airport.find.ref(airpt_id).delete();
         return ok(airport_index.render(Airport.all()));
