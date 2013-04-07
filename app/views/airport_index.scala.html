@@ -20,7 +20,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href=@routes.AirportController.delete(airport.airpt_id) >
+                    <a href="" path=@routes.AirportController.delete(airport.airpt_id) role="button" data-toggle="modal" data-target="#delete-modal" class="delete-link">
                         <i class="icon-remove"></i> Delete
                     </a>
                 </td>
@@ -28,4 +28,5 @@
         }
         </tbody>
     </table>
+    @views.html.delete_confirmation(routes.AirportController.index())
 }
