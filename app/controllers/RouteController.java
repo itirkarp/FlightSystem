@@ -63,9 +63,13 @@ public class RouteController extends Controller {
                 Route.create(filledForm.get());
             } catch(PersistenceException e) {
                 String[] temp = e.getMessage().split("S1784498.");
-                temp = temp[1].split("\\) violated");
-                String constraintName = temp[0];
-                flash("error", errorMessages.get(constraintName));
+                if (temp.length >1 ) {
+                    temp = temp[1].split("\\) violated");
+                    String constraintName = temp[0];
+                    flash("error", errorMessages.get(constraintName));
+                } else {
+                    flash("error", "Cannot create route. A database error occurred: " + e.getMessage());
+                }
                 return badRequest(route_create.render(filledForm));
             }
         }
