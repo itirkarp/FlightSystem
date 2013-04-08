@@ -3,8 +3,8 @@
 @main("Welcome to EasyFly") {
     @views.html.error()
     <div id="search">
-        @views.html.search()
-        <a href=@routes.AirportController.create() class="btn btn-primary pull-right">New Airport</a>
+        <div class="span6">@views.html.search()</div>
+        <div class="span6"><a href=@routes.AirportController.create() class="btn btn-primary pull-right">New Airport</a></div>
     </div>
     <table class="table table-striped" id="data-table">
         <thead></thead>

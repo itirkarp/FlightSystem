@@ -2,8 +2,8 @@
 
 @main("EasyFly") {
     <div id="search">
-        @views.html.search()
-        <a href=@routes.RouteController.create() class="btn btn-primary pull-right">New Route</a>
+        <div class="span6">@views.html.search()</div>
+        <div class="span6"><a href=@routes.RouteController.create() class="btn btn-primary pull-right">New Route</a></div>
     </div>
     <table class="table table-striped" id="data-table">
         <thead></thead>
