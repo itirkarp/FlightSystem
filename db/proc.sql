@@ -28,3 +28,18 @@ for each row
 begin
   delete from route_seg where route_id = :old.route_id;
 end;
+
+/
+
+CREATE OR REPLACE TRIGGER trg_Update_Segment_Details
+AFTER UPDATE ON ROUTE
+FOR EACH ROW
+BEGIN
+UPDATE ROUTE_SEG SET
+ARR_TIME = :new.ARR_TIME,
+DEP_TIME = :new.DEP_TIME,
+AIRPT_ID_TO = :new.AIRPT_ID_TO,
+AIRPT_ID_FROM = :new.AIRPT_ID_FROM
+WHERE
+ROUTE_ID = :old.ROUTE_ID; 
+END;
