@@ -46,6 +46,8 @@ public class Route extends Model {
     }
 
     public static void create(Route route) {
+        route.overbook_f = 0;
+        route.overbook_i = 0;        
         route.save();
     }
 
@@ -59,6 +61,10 @@ public class Route extends Model {
         route.airln_id = airln_id;
         route.day_no = day_no;
         route.update();
+    }
+
+    public boolean areAirportsSame() {
+        return airpt_id_from.equals(airpt_id_to);
     }
 
 }
