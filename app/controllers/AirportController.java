@@ -81,7 +81,7 @@ public class AirportController extends Controller {
         Connection connection = null;
         CallableStatement callableStatement = null;
         connection = play.db.DB.getConnection();
-        String storedProc = "{call delete_airport(?)}";
+        String storedProc = "{call sp_delete_airport(?)}";
         callableStatement = connection.prepareCall(storedProc);
         callableStatement.setString(1, airpt_id);
         callableStatement.executeUpdate();
