@@ -1,5 +1,6 @@
 package controllers;
 
+import com.avaje.ebean.Ebean;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.persistence.PersistenceException;
@@ -91,11 +92,12 @@ public class RouteController extends Controller {
             flash("error", "There were errors in the form:");
             return badRequest(route_create.render(filledForm));
         } else {
+            Ebean.beginTransaction();
             try {
-                // TODO: wrap this in a transaction
                 Route route = filledForm.get();
                 Route.create(route);
                 RouteSegment.create(route.arr_time, route.dep_time, route.airpt_id_to, route.airpt_id_from, route);
+                Ebean.commitTransaction();
             } catch (PersistenceException e) {
                 String[] temp = e.getMessage().split("S1784498.");
                 if (temp.length > 1) {
@@ -105,7 +107,10 @@ public class RouteController extends Controller {
                 } else {
                     flash("error", "Cannot create route. A database error occurred: " + e.getMessage());
                 }
+                Ebean.rollbackTransaction();
                 return badRequest(route_create.render(filledForm));
+            } finally {
+                Ebean.endTransaction();  
             }
         }
         return ok(route_index.render(Route.all()));
