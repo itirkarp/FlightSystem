@@ -39,16 +39,24 @@ public class RouteController extends Controller {
 
     public static Result update(String id) {
         Form<Route> filledForm = routeForm.bindFromRequest();
+        Route route = Route.find.ref(id);
         if (filledForm.hasErrors()) {
             flash("error", "There were errors in the form:");
-            Route route = Route.find.ref(id);
+            return badRequest(route_edit.render(route, filledForm));
+        } else if (filledForm.get().areAirportsSame()) {
+            ArrayList<ValidationError> errorList = new ArrayList<ValidationError>() {{
+                    add(new ValidationError("Source and destination airports should be different.", 
+                            "Source and destination airports should be different."));
+                }};
+            filledForm.errors().put("airpt_id_from", errorList);
+            flash("error", "There were errors in the form:");
             return badRequest(route_edit.render(route, filledForm));
         } else {
-            Route route = filledForm.get();
+            Route newRoute = filledForm.get();
             try {
                 
-                Route.update(route.route_id, route.arr_time, route.airpt_id_to,
-                        route.dep_time, route.airpt_id_from, route.airln_id, route.day_no);
+                Route.update(route.route_id, newRoute.arr_time, newRoute.airpt_id_to,
+                        newRoute.dep_time, newRoute.airpt_id_from, newRoute.airln_id, newRoute.day_no);
             } catch (PersistenceException e) {
                 String[] temp = e.getMessage().split("S1784498.");
                 if (temp.length > 1) {
@@ -58,7 +66,7 @@ public class RouteController extends Controller {
                 } else {
                     flash("error", "Cannot create route. A database error occurred: " + e.getMessage());
                 }
-                return badRequest(route_edit.render(route, filledForm));
+                return badRequest(route_edit.render(newRoute, filledForm));
             }
         }
         return ok(route_index.render(Route.all()));
