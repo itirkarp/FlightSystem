@@ -10,11 +10,11 @@ end;
 
 /
 
-create or replace procedure delete_airport(airptid varchar2) as
+create or replace procedure delete_airport(pairptid varchar2) as
 child_exists  exception;
 pragma exception_init (child_exists , -02292);
 begin
-  delete from airport where airpt_id = airptid;
+  delete from airport where airpt_id = pairptid;
 exception
    when child_exists then
       raise_application_error(-20001, ': Cannot delete airport. A route exists for this airport.'); 
