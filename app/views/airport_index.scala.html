@@ -1,9 +1,9 @@
 @(airports: List[Airport])
 
-@main("Welcome to EasyFly") {    
+@main("Welcome to EasyFly") {
     @views.html.error()
     <div id="search">
-        <span>Search form here</span>
+        @views.html.search()
         <a href=@routes.AirportController.create() class="btn btn-primary pull-right">New Airport</a>
     </div>
     <table class="table table-striped" id="data-table">

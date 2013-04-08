@@ -3,7 +3,7 @@
 @main("EasyFly") {
     @views.html.error()
     <div id="search">
-        <span>Search form here</span>
+        @views.html.search()
         <a href=@routes.AirlineController.create() class="btn btn-primary pull-right">New Airline</a>
     </div>
     <table class="table table-striped" id="data-table">

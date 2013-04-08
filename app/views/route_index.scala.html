@@ -2,7 +2,7 @@
 
 @main("EasyFly") {
     <div id="search">
-        <span>Search form here</span>
+        @views.html.search()
         <a href=@routes.RouteController.create() class="btn btn-primary pull-right">New Route</a>
     </div>
     <table class="table table-striped" id="data-table">
