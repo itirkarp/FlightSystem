@@ -43,3 +43,23 @@ AIRPT_ID_FROM = :new.AIRPT_ID_FROM
 WHERE
 ROUTE_ID = :old.ROUTE_ID; 
 END;
+
+/
+
+CREATE OR REPLACE PROCEDURE SP_DELETE_AIRCRAFT_TYPE(pAircraft_type_id VARCHAR2) AS
+child_exists exception;
+pragma exception_init (child_exists , -02292);
+begin
+  delete from aircraft_type where aircr_type_id = pAircraft_type_id;
+exception
+   when child_exists  then
+      raise_application_error(-20004, ': Cannot delete aircraft type. A aircraft exists for this aircraft type.'); 
+end;
+
+/
+
+ALTER TABLE ROUTE_SEG DROP CONSTRAINT RTSG_IN;
+
+/
+
+ALTER TABLE ROUTE_SEG ADD CONSTRAINT RTSG_IN FOREIGN KEY (ROUTE_ID) REFERENCES ROUTE (ROUTE_ID) ON DELETE CASCADE;
