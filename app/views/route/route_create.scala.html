@@ -15,7 +15,20 @@
                 @inputText(routeForm("dep_time"), '_label -> "Departure Time (24 hour format)")
                 @inputText(routeForm("arr_time"), '_label -> "Arrival Time (24 hour format)") 
                 @inputText(routeForm("airln_id"), '_label -> "Airline ID")
-                @inputText(routeForm("day_no"), '_label -> "Day Number (1 to 7)")
+                <div class="clearfix">
+                    <label for="day_no">Day</label>
+                    <div class="input">
+                        <select name="day_no">
+                            <option value="1">Monday</option>
+                            <option value="2">Tuesday</option>
+                            <option value="3">Wednesday</option>
+                            <option value="4">Thursday</option>
+                            <option value="5">Friday</option>
+                            <option value="6">Saturday</option>
+                            <option value="7">Sunday</option>
+                        </select>
+                    </div>
+                </div>
         </div>
         <div class="span6">
             <h2>Route Segment Details</h2>

@@ -20,10 +20,10 @@ function bindShowSegment() {
         var element = "#" + $(this).attr("id").split("-")[0]+"-segment";
         if ($(element).hasClass("hide")) {
             $(element).removeClass("hide");
-            $(this).html("<i class=\"icon-arrow-up\"></i>Hide Segments");
+            $(this).html("<i class=\"icon-arrow-up\"></i>Hide");
         } else {
             $(element).addClass("hide");
-            $(this).html("<i class=\"icon-arrow-down\"></i>Show Segments");
+            $(this).html("<i class=\"icon-arrow-down\"></i>Segments");
         }
     });
 }
