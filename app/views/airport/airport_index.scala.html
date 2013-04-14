@@ -1,9 +1,9 @@
 @(airports: List[Airport])
 
 @main("Welcome to EasyFly") {
-    @views.html.error()
+    @common.error()
     <div id="search">
-        <div class="span6">@views.html.search()</div>
+        <div class="span6">@common.search()</div>
         <div class="span6"><a href=@routes.AirportController.create() class="btn btn-primary pull-right">New Airport</a></div>
     </div>
     <table class="table table-striped" id="data-table">
@@ -29,5 +29,5 @@
         }
         </tbody>
     </table>
-    @views.html.delete_confirmation(routes.AirportController.index())
+    @common.delete_confirmation(routes.AirportController.index())
 }

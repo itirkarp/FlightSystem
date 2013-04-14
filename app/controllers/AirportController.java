@@ -10,7 +10,7 @@ import play.*;
 import play.data.Form;
 import play.mvc.*;
 
-import views.html.*;
+import views.html.airport.*;
 
 public class AirportController extends Controller {
 
@@ -81,8 +81,7 @@ public class AirportController extends Controller {
         Connection connection = null;
         CallableStatement callableStatement = null;
         connection = play.db.DB.getConnection();
-        String storedProc = "{call sp_delete_airport(?)}";
-        callableStatement = connection.prepareCall(storedProc);
+        callableStatement = connection.prepareCall("{call sp_delete_airport(?)}");
         callableStatement.setString(1, airpt_id);
         callableStatement.executeUpdate();
     }

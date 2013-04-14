@@ -11,7 +11,7 @@ import play.data.Form;
 import play.data.validation.ValidationError;
 import play.mvc.*;
 
-import views.html.*;
+import views.html.route.*;
 
 public class RouteController extends Controller {
 

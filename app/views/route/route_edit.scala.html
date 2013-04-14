@@ -1,10 +1,10 @@
 @(route: Route, routeForm: Form[Route])
 
 @import helper._
-@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) }
+@implicitFieldConstructor = @{ FieldConstructor(common.twitterBootstrapInput.render) }
 
 @main("EasyFly") {
-    @views.html.errorForm(routeForm)
+    @common.errorForm(routeForm)
     <div class="row-fluid">
         <div class="span6">
             <h2>Edit Route</h2>

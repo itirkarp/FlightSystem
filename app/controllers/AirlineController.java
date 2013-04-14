@@ -8,10 +8,8 @@ import javax.persistence.PersistenceException;
 import play.*;
 import play.mvc.*;
 import models.Airline;
-import play.data.*;
 import play.data.Form;
-import play.data.validation.*;
-import views.html.*;
+import views.html.airline.*;
 
 public class AirlineController extends Controller {
 

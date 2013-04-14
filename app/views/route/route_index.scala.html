@@ -2,7 +2,7 @@
 
 @main("EasyFly") {
     <div id="search">
-        <div class="span6">@views.html.search()</div>
+        <div class="span6">@common.search()</div>
         <div class="span6"><a href=@routes.RouteController.create() class="btn btn-primary pull-right">New Route</a></div>
     </div>
     <table class="table table-striped" id="data-table">
@@ -43,5 +43,5 @@
         }
         </tbody>
     </table>
-    @views.html.delete_confirmation(routes.RouteController.index())
+    @common.delete_confirmation(routes.RouteController.index())
 }
