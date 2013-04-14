@@ -1,0 +1,92 @@
+package controllers;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.HashMap;
+import javax.persistence.PersistenceException;
+import play.mvc.*;
+import views.html.aircraftType.*;
+import models.AircraftType;
+import models.Airline;
+import play.data.Form;
+import play.mvc.Result;
+import views.html.airline.airline_edit;
+import views.html.airline.airline_index;
+
+/**
+ * HIT8119
+ *
+ * @author chandan 1785265
+ */
+public class AircraftTypeController extends Controller {
+
+    static Form<AircraftType> aircraftTypeForm = Form.form(AircraftType.class);
+    
+    static final HashMap<String, String> errorMessages = new HashMap<String, String>() {
+        {
+            put("ORA-20002", "Cannot delete airline. A route exists for this airline.");
+            put("AIRT_PK", "Cannot create aircraft type. This aircraft type already exists.");
+        }
+    };
+
+    public static Result index() {
+        return ok(aircraftType_index.render(AircraftType.all()));
+    }
+
+    public static Result create() {
+        return ok(aircraftType_create.render(aircraftTypeForm));
+    }
+
+    public static Result save() {
+        Form<AircraftType> filledForm = aircraftTypeForm.bindFromRequest();
+        if (filledForm.hasErrors()) {
+            flash("error", "There were errors in the form:");
+            return badRequest(aircraftType_create.render(filledForm));
+        } else {
+            try {
+                AircraftType.create(filledForm.get());
+            } catch (PersistenceException e) {
+                if (e.getMessage().contains("AIRT_PK")) {
+                    flash("error", "Cannot create aircraft type. This aircraft type already exists.");
+                } else {
+                    flash("error", "Cannot create airline. A database error occured.");
+                }
+                return badRequest(aircraftType_create.render(filledForm));
+            }
+        }
+        return ok(aircraftType_index.render(AircraftType.all()));
+    }
+
+    public static Result edit(String id) {
+        AircraftType aircraftType = AircraftType.find.ref(id);
+        return ok(aircraftType_edit.render(aircraftType, aircraftTypeForm.fill(aircraftType)));
+    }
+
+    public static Result update(String id) {
+        Form<AircraftType> filledForm = aircraftTypeForm.bindFromRequest();
+        if (filledForm.hasErrors()) {
+            flash("error", "There were errors in the form:");
+            AircraftType aircraftType = AircraftType.find.ref(id);
+            return badRequest(aircraftType_edit.render(aircraftType, filledForm));
+        } else {
+            AircraftType.update(filledForm.get().aircr_type_id, filledForm.get().aircraft_type, filledForm.get().maximum_seats);
+        }
+        return ok(aircraftType_index.render(AircraftType.all()));
+    }
+    
+    public static Result delete(String id) {
+        AircraftType.find.ref(id).delete();
+        return ok(aircraftType_index.render(AircraftType.all()));
+    }
+    
+     public static void deleteAircraftType(String aircr_type_id) throws SQLException {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        connection = play.db.DB.getConnection();
+        String storedProc = "{call sp_delete_airline(?)}";
+        callableStatement = connection.prepareCall(storedProc);
+        callableStatement.setString(1, aircr_type_id);
+        callableStatement.executeUpdate();
+    }
+}
