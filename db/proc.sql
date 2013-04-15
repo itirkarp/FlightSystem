@@ -63,3 +63,13 @@ ALTER TABLE ROUTE_SEG DROP CONSTRAINT RTSG_IN;
 /
 
 ALTER TABLE ROUTE_SEG ADD CONSTRAINT RTSG_IN FOREIGN KEY (ROUTE_ID) REFERENCES ROUTE (ROUTE_ID) ON DELETE CASCADE;
+
+/
+
+CREATE OR REPLACE PACKAGE pkg_EasyFly_Maintenance AS
+procedure sp_delete_airline(pairlnid varchar2);
+procedure sp_delete_airport(pairptid varchar2);
+PROCEDURE SP_DELETE_AIRCRAFT_TYPE(pAircraft_type_id VARCHAR2);
+END pkg_EasyFly_Maintenance;
+
+/
