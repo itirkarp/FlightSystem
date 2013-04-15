@@ -1,15 +1,11 @@
 package controllers;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.HashMap;
 import javax.persistence.PersistenceException;
 import models.Aircraft;
+import play.data.Form;
 import play.mvc.*;
 import views.html.aircraft.*;
-import play.data.Form;
-import play.mvc.Result;
 
 
 public class AircraftController extends Controller {
@@ -72,13 +68,4 @@ public class AircraftController extends Controller {
         return ok(aircraft_index.render(Aircraft.all()));
     }
 
-    public static void deleteAircraft(String aircr_type_id) throws SQLException {
-        Connection connection = null;
-        CallableStatement callableStatement = null;
-        connection = play.db.DB.getConnection();
-        String storedProc = "{call SP_DELETE_AIRCRAFT_TYPE(?)}";
-        callableStatement = connection.prepareCall(storedProc);
-        callableStatement.setString(1, aircr_type_id);
-        callableStatement.executeUpdate();
-    }
 }

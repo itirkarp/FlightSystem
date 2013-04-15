@@ -14,22 +14,22 @@ public class Aircraft extends Model{
     
     @Id
     @Required(message = "Aircraft ID is required.")
-    @MaxLength(value = 6, message = "Airline Id cannot be more than 6 characters")
+    @MaxLength(value = 6, message = "Aircraft ID cannot be more than 6 characters")
     public String aircraft_id;
     @Required(message = "Aircraft name is required.")
     @MaxLength(value = 30, message = "Aircraft name cannot be more than 30 characters")
     public String aircraft_name;
     @Required(message = "Aircraft type ID is required.")
-    @MaxLength(value = 6, message = "Aircraft type ID name cannot be more than 30 characters")
+    @MaxLength(value = 6, message = "Aircraft type ID cannot be more than 30 characters")
     public String aircr_type_ID;
-    @Required(message = "First class total seats required.")
-    @Max(value=999, message = "Maximum number of first class seats cannot be more than 999.")
+    @Required(message = "Number of First class seats is required.")
+    @Max(value=999, message = "Number of First class seats cannot be more than 999.")
     public Integer seats_qty_F;
-    @Required(message = "Business class total seats required")
-    @Max(value=999, message = "Maximum number of business seats cannot be more than 999.")
+    @Required(message = "Number of Business class seats is required.")
+    @Max(value=999, message = "Number of Business class seats cannot be more than 999.")
     public Integer seats_qty_B;
-    @Required(message = "Economy class total seats required")
-    @Max(value=999, message = "Maximum number of economy seats cannot be more than 999.")
+    @Required(message = "Number of Economy class seats is required.")
+    @Max(value=999, message = "Number of Economy class seats cannot be more than 999.")
     public Integer seats_qty_E;
     
     public static Model.Finder<String, Aircraft> find = new Model.Finder(String.class, Aircraft.class);
