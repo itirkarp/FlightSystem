@@ -1,4 +1,11 @@
-This is your new Play 2.1 application.
+EasyFly Flight System
 =====================================
 
-This file will be packaged with your application, when using `play dist`. OK
+EasyFly is a flight maintenance and booking system. It allows different kinds of authorized users to schedule and maintain airports, airlines, routes and flights. 
+It also allows customers to check flight schedules and availability, book tickets, select seats, and generate boarding passes.
+
+Languages / tools / technologies used:
+- Play Framework for Java
+- Oracle
+- Bootstrap
+- JQuery
