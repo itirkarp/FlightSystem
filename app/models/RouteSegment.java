@@ -1,9 +1,10 @@
 package models;
 
 import java.util.*;
-import play.db.ebean.*;
-import play.data.validation.Constraints.*;
 import javax.persistence.*;
+import play.data.validation.Constraints.MaxLength;
+import play.data.validation.Constraints.Required;
+import play.db.ebean.*;
 
 @Entity
 @Table(name = "route_seg")

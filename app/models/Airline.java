@@ -4,9 +4,10 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
-import play.db.ebean.*;
-import play.data.validation.Constraints.*;
 import javax.persistence.*;
+import play.data.validation.Constraints.MaxLength;
+import play.data.validation.Constraints.Required;
+import play.db.ebean.*;
 
 @Entity
 public class Airline extends Model {

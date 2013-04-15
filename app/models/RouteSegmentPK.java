@@ -1,12 +1,10 @@
 package models;
 
 import java.io.Serializable;
-import java.util.*;
-import play.db.ebean.*;
-import play.data.validation.Constraints.*;
 import javax.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import play.data.validation.Constraints.Required;
 
 @SequenceGenerator(name="segment_seq", initialValue=1, allocationSize=1000)
 @Embeddable

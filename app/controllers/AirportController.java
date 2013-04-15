@@ -1,15 +1,11 @@
 package controllers;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import javax.persistence.PersistenceException;
 import models.Airport;
-import play.*;
 import play.data.Form;
 import play.mvc.*;
-
 import views.html.airport.*;
 
 public class AirportController extends Controller {

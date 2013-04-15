@@ -5,17 +5,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import javax.persistence.PersistenceException;
-import play.mvc.*;
-import views.html.aircraftType.*;
 import models.AircraftType;
 import play.data.Form;
-import play.mvc.Result;
+import play.mvc.*;
+import views.html.aircraftType.*;
 
-/**
- * HIT8119
- *
- * @author chandan 1785265
- */
 public class AircraftTypeController extends Controller {
 
     static Form<AircraftType> aircraftTypeForm = Form.form(AircraftType.class);
