@@ -1,4 +1,4 @@
-@(routeForm: Form[Route])
+@(routeForm: Form[Route], airlines: List[Airline], airports: List[Airport])
 
 @import helper._
 @implicitFieldConstructor = @{ FieldConstructor(common.twitterBootstrapInput.render) }
@@ -10,11 +10,20 @@
         <div class="span6">
             <h2>Add a new Route</h2>
                 @inputText(routeForm("route_id"), '_label -> "Route ID") 
-                @inputText(routeForm("airpt_id_from"), '_label -> "Source Airport") 
-                @inputText(routeForm("airpt_id_to"), '_label -> "Destination Airport") 
+                @common.airportList("airpt_id_from", "Source Airport", airports, routeForm)
+                @common.airportList("airpt_id_to", "Destination Airport", airports, routeForm)
                 @inputText(routeForm("dep_time"), '_label -> "Departure Time (24 hour format)")
                 @inputText(routeForm("arr_time"), '_label -> "Arrival Time (24 hour format)") 
-                @inputText(routeForm("airln_id"), '_label -> "Airline ID")
+                <div class="clearfix">
+                    <label for="airln_id">Airline</label>
+                    <div class="input">
+                        <select name="airln_id">
+                            @for(airline <- airlines) {
+                                <option value=@airline.airln_id>@airline.airln_name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
                 <div class="clearfix">
                     <label for="day_no">Day</label>
                     <div class="input">

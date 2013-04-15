@@ -66,22 +66,14 @@ public class AirlineController extends Controller {
         return ok(airline_index.render(Airline.all()));
     }
 
-    public static Result delete(String airln_id) {
+    public static Result delete(String id) {
+        Airline airline = Airline.find.ref(id);
         try {
-            deleteAirline(airln_id);
+            airline.remove();
         } catch (SQLException e) {
             flash("error", errorMessages.get(e.getMessage().substring(0, 9)));
         }
         return ok(airline_index.render(Airline.all()));
     }
-    
-     public static void deleteAirline(String airln_id) throws SQLException {
-        Connection connection = null;
-        CallableStatement callableStatement = null;
-        connection = play.db.DB.getConnection();
-        String storedProc = "{call sp_delete_airline(?)}";
-        callableStatement = connection.prepareCall(storedProc);
-        callableStatement.setString(1, airln_id);
-        callableStatement.executeUpdate();
-    }
+
 }

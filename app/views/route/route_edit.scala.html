@@ -1,4 +1,4 @@
-@(route: Route, routeForm: Form[Route])
+@(route: Route, routeForm: Form[Route], airlines: List[Airline], airports: List[Airport])
 
 @import helper._
 @implicitFieldConstructor = @{ FieldConstructor(common.twitterBootstrapInput.render) }
@@ -15,11 +15,11 @@
                         <input type="text" name="route_id" value=@route.route_id disabled="disabled">
                     </div>
                 </div>
-                @inputText(routeForm("airpt_id_from"), '_label -> "Source Airport") 
-                @inputText(routeForm("airpt_id_to"), '_label -> "Destination Airport") 
+                @common.airportList("airpt_id_from", "Source Airport", airports, routeForm)
+                @common.airportList("airpt_id_to", "Destination Airport", airports, routeForm)
                 @inputText(routeForm("dep_time"), '_label -> "Departure Time (24 hour format)")
                 @inputText(routeForm("arr_time"), '_label -> "Arrival Time (24 hour format)") 
-                @inputText(routeForm("airln_id"), '_label -> "Airline ID")
+                @common.airlineList("airln_id", airlines, routeForm)
                 @inputText(routeForm("day_no"), '_label -> "Day Number (1 to 7)")
                 <input type="hidden" name="route_id" value=@route.route_id>
                 <div class="form-actions">

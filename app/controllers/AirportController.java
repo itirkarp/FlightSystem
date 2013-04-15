@@ -68,21 +68,14 @@ public class AirportController extends Controller {
         return ok(airport_index.render(Airport.all()));
     }
 
-    public static Result delete(String airpt_id) {
+    public static Result delete(String id) {
+        Airport airport = Airport.find.ref(id);
         try {
-            deleteAirport(airpt_id);
+            airport.remove();
         } catch (SQLException e) {
             flash("error", errorMessages.get(e.getMessage().substring(0, 9)));
         }
         return ok(airport_index.render(Airport.all()));
     }
 
-    public static void deleteAirport(String airpt_id) throws SQLException {
-        Connection connection = null;
-        CallableStatement callableStatement = null;
-        connection = play.db.DB.getConnection();
-        callableStatement = connection.prepareCall("{call sp_delete_airport(?)}");
-        callableStatement.setString(1, airpt_id);
-        callableStatement.executeUpdate();
-    }
 }

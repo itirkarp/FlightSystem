@@ -4,17 +4,21 @@ import com.avaje.ebean.Ebean;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.persistence.PersistenceException;
+import models.Airline;
+import models.Airport;
 import models.Route;
 import models.RouteSegment;
-import play.*;
 import play.data.Form;
 import play.data.validation.ValidationError;
 import play.mvc.*;
-
 import views.html.route.*;
 
 public class RouteController extends Controller {
 
+    static ArrayList<ValidationError> errorList = new ArrayList<ValidationError>() {{
+            add(new ValidationError("Source and destination airports should be different.", 
+                                    "Source and destination airports should be different."));
+        }};
     static Form<Route> routeForm = Form.form(Route.class);
     static final HashMap<String, String> errorMessages = new HashMap<String, String>() {
         {
@@ -30,12 +34,12 @@ public class RouteController extends Controller {
     }
 
     public static Result create() {
-        return ok(route_create.render(routeForm));
+        return ok(route_create.render(routeForm, Airline.all(), Airport.all()));
     }
 
     public static Result edit(String id) {
         Route route = Route.find.ref(id);
-        return ok(route_edit.render(route, routeForm.fill(route)));
+        return ok(route_edit.render(route, routeForm.fill(route), Airline.all(), Airport.all()));
     }
 
     public static Result update(String id) {
@@ -43,19 +47,14 @@ public class RouteController extends Controller {
         Route route = Route.find.ref(id);
         if (filledForm.hasErrors()) {
             flash("error", "There were errors in the form:");
-            return badRequest(route_edit.render(route, filledForm));
+            return badRequest(route_edit.render(route, filledForm, Airline.all(), Airport.all()));
         } else if (filledForm.get().areAirportsSame()) {
-            ArrayList<ValidationError> errorList = new ArrayList<ValidationError>() {{
-                    add(new ValidationError("Source and destination airports should be different.", 
-                            "Source and destination airports should be different."));
-                }};
             filledForm.errors().put("airpt_id_from", errorList);
             flash("error", "There were errors in the form:");
-            return badRequest(route_edit.render(route, filledForm));
+            return badRequest(route_edit.render(route, filledForm, Airline.all(), Airport.all()));
         } else {
             Route newRoute = filledForm.get();
             try {
-                
                 Route.update(route.route_id, newRoute.arr_time, newRoute.airpt_id_to,
                         newRoute.dep_time, newRoute.airpt_id_from, newRoute.airln_id, newRoute.day_no);
             } catch (PersistenceException e) {
@@ -67,7 +66,7 @@ public class RouteController extends Controller {
                 } else {
                     flash("error", "Cannot create route. A database error occurred: " + e.getMessage());
                 }
-                return badRequest(route_edit.render(newRoute, filledForm));
+                return badRequest(route_edit.render(newRoute, filledForm, Airline.all(), Airport.all()));
             }
         }
         return ok(route_index.render(Route.all()));
@@ -82,15 +81,11 @@ public class RouteController extends Controller {
         Form<Route> filledForm = routeForm.bindFromRequest();
         if (filledForm.hasErrors()) {
             flash("error", "There were errors in the form:");
-            return badRequest(route_create.render(filledForm));
+            return badRequest(route_create.render(filledForm, Airline.all(), Airport.all()));
         } else if (filledForm.get().areAirportsSame()) {
-            ArrayList<ValidationError> errorList = new ArrayList<ValidationError>() {{
-                    add(new ValidationError("Source and destination airports should be different.", 
-                            "Source and destination airports should be different."));
-                }};
             filledForm.errors().put("airpt_id_from", errorList);
             flash("error", "There were errors in the form:");
-            return badRequest(route_create.render(filledForm));
+            return badRequest(route_create.render(filledForm, Airline.all(), Airport.all()));
         } else {
             Ebean.beginTransaction();
             try {
@@ -108,7 +103,7 @@ public class RouteController extends Controller {
                     flash("error", "Cannot create route. A database error occurred: " + e.getMessage());
                 }
                 Ebean.rollbackTransaction();
-                return badRequest(route_create.render(filledForm));
+                return badRequest(route_create.render(filledForm, Airline.all(), Airport.all()));
             } finally {
                 Ebean.endTransaction();  
             }

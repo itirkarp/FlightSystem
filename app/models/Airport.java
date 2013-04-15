@@ -1,5 +1,8 @@
 package models;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -41,5 +44,14 @@ public class Airport extends Model{
         airport.airpt_name = airpt_name;
         airport.country = country;
         airport.update();
+    }
+
+    public void remove() throws SQLException {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        connection = play.db.DB.getConnection();
+        callableStatement = connection.prepareCall("{call sp_delete_airport(?)}");
+        callableStatement.setString(1, airpt_id);
+        callableStatement.executeUpdate();
     }
 }

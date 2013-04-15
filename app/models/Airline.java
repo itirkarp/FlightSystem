@@ -1,5 +1,8 @@
 package models;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 import play.db.ebean.*;
 import play.data.validation.Constraints.*;
@@ -34,5 +37,15 @@ public class Airline extends Model {
         Airline airline = find.ref(airln_id);
         airline.airln_name = airln_name;
         airline.update();
+    }
+    
+    public void remove() throws SQLException {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        connection = play.db.DB.getConnection();
+        String storedProc = "{call sp_delete_airline(?)}";
+        callableStatement = connection.prepareCall(storedProc);
+        callableStatement.setString(1, airln_id);
+        callableStatement.executeUpdate();
     }
 }
