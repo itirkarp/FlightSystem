@@ -34,5 +34,12 @@ GET     /aircraftType/:id/delete    controllers.AircraftTypeController.delete(id
 GET     /aircraftType/save          controllers.AircraftTypeController.save
 GET     /aircraftType/:id/update    controllers.AircraftTypeController.update(id: String)
 
+GET     /aircraft                   controllers.AircraftController.index
+GET     /aircraft/create            controllers.AircraftController.create
+GET     /aircraft/:id/edit          controllers.AircraftController.edit(id: String)
+GET     /aircraft/:id/delete        controllers.AircraftController.delete(id: String)
+GET     /aircraft/save              controllers.AircraftController.save
+GET     /aircraft/:id/update        controllers.AircraftController.update(id: String)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

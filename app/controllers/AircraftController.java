@@ -5,20 +5,16 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import javax.persistence.PersistenceException;
+import models.Aircraft;
 import play.mvc.*;
-import views.html.aircraftType.*;
-import models.AircraftType;
+import views.html.aircraft.*;
 import play.data.Form;
 import play.mvc.Result;
 
-/**
- * HIT8119
- *
- * @author chandan 1785265
- */
-public class AircraftTypeController extends Controller {
 
-    static Form<AircraftType> aircraftTypeForm = Form.form(AircraftType.class);
+public class AircraftController extends Controller {
+
+    static Form<Aircraft> aircraftForm = Form.form(Aircraft.class);
     static final HashMap<String, String> errorMessages = new HashMap<String, String>() {
         {
             put("ORA-20004", "Cannot delete aircraft type. A aircraft exists for this aircraft type.");
@@ -27,60 +23,56 @@ public class AircraftTypeController extends Controller {
     };
 
     public static Result index() {
-        return ok(aircraftType_index.render(AircraftType.all()));
+        return ok(aircraft_index.render(Aircraft.all()));
     }
 
     public static Result create() {
-        return ok(aircraftType_create.render(aircraftTypeForm));
+        return ok(aircraft_create.render(aircraftForm));
     }
 
     public static Result save() {
-        Form<AircraftType> filledForm = aircraftTypeForm.bindFromRequest();
+        Form<Aircraft> filledForm = aircraftForm.bindFromRequest();
         if (filledForm.hasErrors()) {
             flash("error", "There were errors in the form:");
-            return badRequest(aircraftType_create.render(filledForm));
+            return badRequest(aircraft_create.render(filledForm));
         } else {
             try {
-                AircraftType.create(filledForm.get());
+                Aircraft.create(filledForm.get());
             } catch (PersistenceException e) {
                 if (e.getMessage().contains("AIRT_PK")) {
                     flash("error", "Cannot create aircraft type. This aircraft type already exists.");
                 } else {
                     flash("error", "Cannot create airline. A database error occured.");
                 }
-                return badRequest(aircraftType_create.render(filledForm));
+                return badRequest(aircraft_create.render(filledForm));
             }
         }
-        return ok(aircraftType_index.render(AircraftType.all()));
+        return ok(aircraft_index.render(Aircraft.all()));
     }
 
     public static Result edit(String id) {
-        AircraftType aircraftType = AircraftType.find.ref(id);
-        return ok(aircraftType_edit.render(aircraftType, aircraftTypeForm.fill(aircraftType)));
+        Aircraft aircraft = Aircraft.find.ref(id);
+        return ok(aircraft_edit.render(aircraft, aircraftForm.fill(aircraft)));
     }
 
     public static Result update(String id) {
-        Form<AircraftType> filledForm = aircraftTypeForm.bindFromRequest();
+        Form<Aircraft> filledForm = aircraftForm.bindFromRequest();
         if (filledForm.hasErrors()) {
             flash("error", "There were errors in the form:");
-            AircraftType aircraftType = AircraftType.find.ref(id);
-            return badRequest(aircraftType_edit.render(aircraftType, filledForm));
+            Aircraft aircraft = Aircraft.find.ref(id);
+            return badRequest(aircraft_edit.render(aircraft, filledForm));
         } else {
-            AircraftType.update(filledForm.get().aircr_type_id, filledForm.get().aircraft_type, filledForm.get().maximum_seats);
+            Aircraft.update(filledForm.get().aircraft_id, filledForm.get().aircraft_name, filledForm.get().aircr_type_ID, filledForm.get().seats_qty_F, filledForm.get().seats_qty_B, filledForm.get().seats_qty_E);
         }
-        return ok(aircraftType_index.render(AircraftType.all()));
+        return ok(aircraft_index.render(Aircraft.all()));
     }
 
     public static Result delete(String id) {
-        try {
-            deleteAircraftType(id);
-        } catch (SQLException e) {
-            flash("error", errorMessages.get(e.getMessage().substring(0, 9)));
-        }
-        return ok(aircraftType_index.render(AircraftType.all()));
+        Aircraft.find.ref(id).delete();
+        return ok(aircraft_index.render(Aircraft.all()));
     }
 
-    public static void deleteAircraftType(String aircr_type_id) throws SQLException {
+    public static void deleteAircraft(String aircr_type_id) throws SQLException {
         Connection connection = null;
         CallableStatement callableStatement = null;
         connection = play.db.DB.getConnection();
