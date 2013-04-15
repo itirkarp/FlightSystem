@@ -18,7 +18,7 @@ public class AircraftController extends Controller {
     static final HashMap<String, String> errorMessages = new HashMap<String, String>() {
         {
             put("ORA-20004", "Cannot delete aircraft type. A aircraft exists for this aircraft type.");
-            put("AIRT_PK", "Cannot create aircraft type. This aircraft type already exists.");
+            put("AIRC_PK", "Cannot create aircraft. This aircraft already exists.");
         }
     };
 
@@ -39,8 +39,8 @@ public class AircraftController extends Controller {
             try {
                 Aircraft.create(filledForm.get());
             } catch (PersistenceException e) {
-                if (e.getMessage().contains("AIRT_PK")) {
-                    flash("error", "Cannot create aircraft type. This aircraft type already exists.");
+                if (e.getMessage().contains("AIRC_PK")) {
+                    flash("error", "Cannot create aircraft. This aircraft already exists.");
                 } else {
                     flash("error", "Cannot create airline. A database error occured.");
                 }
