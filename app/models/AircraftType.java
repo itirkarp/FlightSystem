@@ -1,5 +1,8 @@
 package models;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -46,4 +49,13 @@ public class AircraftType extends Model{
         aircraftType.update();
     }
     
+    public static void deleteAircraftType(String aircr_type_id) throws SQLException {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        connection = play.db.DB.getConnection();
+        String storedProc = "{call SP_DELETE_AIRCRAFT_TYPE(?)}";
+        callableStatement = connection.prepareCall(storedProc);
+        callableStatement.setString(1, aircr_type_id);
+        callableStatement.executeUpdate();
+    }
 }

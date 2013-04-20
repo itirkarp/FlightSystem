@@ -1,4 +1,4 @@
-@(aircraftForm: Form[Aircraft])
+@(aircraftForm: Form[Aircraft], aircraftTypes: List[AircraftType])
 
 @import helper._
 @implicitFieldConstructor = @{ FieldConstructor(common.twitterBootstrapInput.render) }
@@ -11,7 +11,7 @@
             @form(routes.AircraftController.save()) {
                 @inputText(aircraftForm("aircraft_id"), '_label -> "Aircraft ID") 
                 @inputText(aircraftForm("aircraft_name"), '_label -> "Aircraft Name") 
-                @inputText(aircraftForm("aircr_type_ID"), '_label -> "AircraftType ID")
+                @common.aircraftTypeList("aircr_type_id", aircraftTypes, aircraftForm)
                 @inputText(aircraftForm("seats_qty_F"), '_label -> "First class seats")
                 @inputText(aircraftForm("seats_qty_B"), '_label -> "Business class seats")
                 @inputText(aircraftForm("seats_qty_E"), '_label -> "Economy class seats")

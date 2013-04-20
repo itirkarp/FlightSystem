@@ -67,20 +67,10 @@ public class AircraftTypeController extends Controller {
 
     public static Result delete(String id) {
         try {
-            deleteAircraftType(id);
+            AircraftType.deleteAircraftType(id);
         } catch (SQLException e) {
             flash("error", errorMessages.get(e.getMessage().substring(0, 9)));
         }
         return ok(aircraftType_index.render(AircraftType.all()));
-    }
-
-    public static void deleteAircraftType(String aircr_type_id) throws SQLException {
-        Connection connection = null;
-        CallableStatement callableStatement = null;
-        connection = play.db.DB.getConnection();
-        String storedProc = "{call SP_DELETE_AIRCRAFT_TYPE(?)}";
-        callableStatement = connection.prepareCall(storedProc);
-        callableStatement.setString(1, aircr_type_id);
-        callableStatement.executeUpdate();
     }
 }
