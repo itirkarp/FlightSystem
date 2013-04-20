@@ -105,12 +105,6 @@ ALTER  TABLE  ROUTE  ADD  (
 CONSTRAINT  ROUT_TO
 FOREIGN  KEY  (AIRPT_ID_TO)
 REFERENCES    AIRPORT  (AIRPT_ID));
-
-alter table route modify (overbook_f default 0);
-alter table route modify (overbook_i default 0);
-alter table route modify (arr_time default 0);
-alter table route modify (dep_time default 0);
-alter table route modify (day_no default 0);
   
 CREATE  TABLE  route_seg(  
 route_id VARCHAR2(5) NOT  NULL,
@@ -268,3 +262,48 @@ CONSTRAINT  TICK_FOR
 FOREIGN  KEY  (CUST_ID)
 REFERENCES    CUSTOMER  (  CUST_ID));
  
+
+-----------------------------------------------------------------------------------------
+-- START changes made by us to the case study schema
+-----------------------------------------------------------------------------------------
+
+----- setting default values for columns unused by us
+
+alter table route modify (overbook_f default 0);
+alter table route modify (overbook_i default 0);
+alter table route modify (arr_time default 0);
+alter table route modify (dep_time default 0);
+alter table route modify (day_no default 0);
+
+----- dropping FKs which are referring to composite PKs, so that we can drop composite PKs and create surrogate PKs
+
+--dropping BPASS_FOR
+alter table boardingpass drop constraint BPASS_FOR;
+--dropping STAV_FOR
+alter table seats_avail drop constraint STAV_FOR;
+--dropping FLSG_IN
+alter table flight_seg drop constraint FLSG_IN;
+--dropping FLSG_PK
+alter table flight_seg drop constraint FLSG_PK;
+--dropping FLIT_PK
+alter table flight drop constraint FLIT_PK;
+
+----- creating surrogate PKs and replacing the deleted FKs with new PKs
+
+--making new PK for flight
+alter table flight add (constraint FLIT_PK primary key(flight_id));
+--making new PK for flight_seg
+alter table flight_seg add (constraint FLSG_PK primary key(seg_no));
+--making new FK for flight_seg
+alter table flight_seg add flight_id number(2,0) not null;
+alter table flight_seg add (constraint FLSG_IN foreign key(flight_id) references flight);
+--making new FK for seats_avail
+alter table seats_avail add (constraint STAV_FOR foreign key(seg_no) references flight_seg);
+--making new FK for boardingpass
+alter table boardingpass add (constraint bpass_FOR foreign key(seg_no) references flight_seg);
+
+
+
+-----------------------------------------------------------------------------------------
+-- END changes made by us to the case study schema
+-----------------------------------------------------------------------------------------
