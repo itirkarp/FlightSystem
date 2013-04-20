@@ -8,6 +8,7 @@ import models.Airline;
 import models.Airport;
 import models.Route;
 import models.RouteSegment;
+import play.Logger;
 import play.data.Form;
 import play.data.validation.ValidationError;
 import play.mvc.*;
@@ -91,7 +92,9 @@ public class RouteController extends Controller {
             try {
                 Route route = filledForm.get();
                 Route.create(route);
-                RouteSegment.create(route.arr_time, route.dep_time, route.airpt_id_to, route.airpt_id_from, route);
+                for (RouteSegment segment : route.segments) {
+                    RouteSegment.create(segment.arr_time, segment.dep_time, segment.airpt_id_to, segment.airpt_id_from, route);
+                }
                 Ebean.commitTransaction();
             } catch (PersistenceException e) {
                 String[] temp = e.getMessage().split("S1784498.");

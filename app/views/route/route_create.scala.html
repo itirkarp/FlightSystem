@@ -5,18 +5,18 @@
 
 @main("EasyFly") {
     @common.errorForm(routeForm)
-    @form(routes.RouteController.save()) {
-    <div class="row-fluid">
-        <div class="span6">
-            <h2>Add a new Route</h2>
+    <h2>Add a new Route</h2>
+    @form(routes.RouteController.save(), 'class -> "form-horizontal") {
+        <div class="row-fluid">
+            <div class="span8">
                 @inputText(routeForm("route_id"), '_label -> "Route ID") 
                 @common.airportList("airpt_id_from", "Source Airport", airports, routeForm)
                 @common.airportList("airpt_id_to", "Destination Airport", airports, routeForm)
-                @inputText(routeForm("dep_time"), '_label -> "Departure Time (24 hour format)")
-                @inputText(routeForm("arr_time"), '_label -> "Arrival Time (24 hour format)") 
-                <div class="clearfix">
-                    <label for="airln_id">Airline</label>
-                    <div class="input">
+                @inputText(routeForm("dep_time"), '_label -> "Departure Time")
+                @inputText(routeForm("arr_time"), '_label -> "Arrival Time") 
+                <div class="control-group">
+                    <label class="control-label" for="airln_id">Airline</label>
+                    <div class="controls">
                         <select name="airln_id">
                             @for(airline <- airlines) {
                                 <option value=@airline.airln_id>@airline.airln_name</option>
@@ -24,9 +24,9 @@
                         </select>
                     </div>
                 </div>
-                <div class="clearfix">
-                    <label for="day_no">Day</label>
-                    <div class="input">
+                <div class="control-group">
+                    <label class="control-label" for="day_no">Day</label>
+                    <div class="controls">
                         <select name="day_no">
                             <option value="1">Monday</option>
                             <option value="2">Tuesday</option>
@@ -38,38 +38,30 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <a href=@routes.RouteController.index() class="btn">Cancel</a>
+                </div>
+            </div>
+            <div class="span4"></div>
         </div>
-        <div class="span6">
-            <h2>Route Segment Details</h2>
-            <div class="clearfix">
-                <label for="segment.airpt_id_from">Source Airport</label>
-                <div class="input">
-                    <input type="text" name="segment.airpt_id_from" id="segment.airpt_id_from" disabled="disabled">
-                </div>
-            </div>
-            <div class="clearfix">
-                <label for="segment.airpt_id_to">Destination Airport</label>
-                <div class="input">
-                    <input type="text" name="segment.airpt_id_to" id="segment.airpt_id_to" disabled="disabled">
-                </div>
-            </div>
-            <div class="clearfix">
-                <label for="segment.dep_time">Departure Time</label>
-                <div class="input">
-                    <input type="text" name="segment.dep_time" id="segment.dep_time" disabled="disabled">
-                </div>
-            </div>
-            <div class="clearfix">
-                <label for="segment.arr_time">Arrival Time</label>
-                <div class="input">
-                    <input type="text" name="segment.arr_time" id="segment.arr_time" disabled="disabled">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="form-actions">
-        <button type="submit" class="btn btn-primary">Save changes</button>
-        <a href=@routes.RouteController.index() class="btn">Cancel</a>
+    <div class="row-fluid">
+        <h3>Add Route Segments</h3>
+        <table class="table table-striped" id="data-table">
+        <thead></thead>
+        <tbody>
+            <th>Arrival Time</th><th>Departure Time</th><th>Source</th><th>Destination</th><th></th>
+            <tr>
+                <td><input type="text" class="input-small" name="segments[0].arr_time" id="segments[0].arr_time"></td>
+                <td><input type="text" class="input-small" name="segments[0].dep_time" id="segments[0].dep_time"></td>
+                <td><input type="text" class="input-small" name="segments[0].airpt_id_from" id="segments[0].airpt_id_from"></td>
+                <td><input type="text" class="input-small" name="segments[0].airpt_id_to" id="segments[0].airpt_id_to"></td>
+                <td><a href="" class="btn"><i class="icon-plus-sign"></i> Add More</a></td>
+            </tr>
+        </tbody>
+        </table>
     </div>
     }
+        
+    
 }

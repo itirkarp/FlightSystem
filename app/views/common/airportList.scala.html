@@ -1,8 +1,8 @@
 @(id: String, label: String, airports: List[Airport], form: Form[_ <: Object])
 
-<div class="clearfix">
-    <label for=@id>@label</label>
-    <div class="input">
+<div class="control-group">
+    <label class="control-label" for=@id>@label</label>
+    <div class="controls">
         <select name=@id id=@id>
             @for(airport <- airports) {
                 @if(airport.airpt_id == form(id).value()) {

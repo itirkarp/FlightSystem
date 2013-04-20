@@ -6,12 +6,11 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import play.data.validation.Constraints.Required;
 
-@SequenceGenerator(name="segment_seq", initialValue=1, allocationSize=1000)
 @Embeddable
 public class RouteSegmentPK implements Serializable {
 
     @Required
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="segment_seq")
+    @GeneratedValue
     public Integer seg_no;
     @Column(name = "route_id")
     public String route_id;

@@ -2,7 +2,9 @@ package models;
 
 import java.util.*;
 import javax.persistence.*;
+import play.data.validation.Constraints.Max;
 import play.data.validation.Constraints.MaxLength;
+import play.data.validation.Constraints.Min;
 import play.data.validation.Constraints.Required;
 import play.db.ebean.*;
 
@@ -13,10 +15,12 @@ public class RouteSegment extends Model {
     @EmbeddedId
     public RouteSegmentPK primary_key;
     @Required(message = "Arrival time is required.")
-//    @Range(min = 0, max = 2400, message = "Time must be between 0000 and 2400")
+    @Max(value = 2400, message = "Arrival time cannot be more than 2400.")
+    @Min(value = 0, message = "Arrival time cannot be less then 0.")
     public Integer arr_time;
     @Required(message = "Departure time is required.")
-//    @Range(min = 0, max = 2400, message = "Time must be between 0000 and 2400")
+    @Max(value = 2400, message = "Departure time cannot be more than 2400.")
+    @Min(value = 0, message = "Departure time cannot be less then 0.")
     public Integer dep_time;
     @Required(message = "Destination airport is required.")
     @MaxLength(value = 3, message = "Destination airport cannot be more than 3 characters.")
