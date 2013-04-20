@@ -5,7 +5,7 @@
         <div class="span6">@common.search()</div>
         <div class="span6"><a href=@routes.RouteController.create() class="btn btn-primary pull-right">New Route</a></div>
     </div>
-    <table class="table table-striped" id="data-table">
+    <table class="table table-striped index-table" id="data-table">
         <thead></thead>
         <tbody>
         <th></th><th>Route ID</th><th>Source</th><th>Destination</th><th>Departure</th>
@@ -39,7 +39,7 @@
                 </td>
             </tr>
             @for(segment <- route.segments) {
-                <tr id=@route.route_id.concat("-segment") class="hide">
+                <tr class='hide @route.route_id.concat("-segment")'>
                     <th>Segments:</th>
                     <td></td>
                     <td>@segment.airpt_id_from</td>

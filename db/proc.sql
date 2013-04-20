@@ -73,3 +73,5 @@ PROCEDURE SP_DELETE_AIRCRAFT_TYPE(pAircraft_type_id VARCHAR2);
 END pkg_EasyFly_Maintenance;
 
 /
+
+create sequence RouteSegmentSeq start with 1;

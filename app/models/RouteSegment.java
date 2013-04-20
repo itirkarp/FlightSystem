@@ -10,10 +10,13 @@ import play.db.ebean.*;
 
 @Entity
 @Table(name = "route_seg")
+@SequenceGenerator(name = "RouteSegmentSeq", sequenceName="RouteSegmentSeq")
 public class RouteSegment extends Model {
 
-    @EmbeddedId
-    public RouteSegmentPK primary_key;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RouteSegmentSeq")
+    public Integer seg_no;
+    
     @Required(message = "Arrival time is required.")
     @Max(value = 2400, message = "Arrival time cannot be more than 2400.")
     @Min(value = 0, message = "Arrival time cannot be less then 0.")
@@ -30,19 +33,13 @@ public class RouteSegment extends Model {
     public String airpt_id_from;
     
     @ManyToOne
-    @JoinColumn(name="route_id", insertable = false, updatable = false)
+    @JoinColumn(name="route_id")
     public Route route;
     
     public static Finder<String, RouteSegment> find = new Finder(String.class, RouteSegment.class);
 
     public static List<RouteSegment> all() {
         return find.all();
-    }
-
-    public static void create(Integer arr_time, Integer dep_time, String airpt_id_to, String airpt_id_from, Route route) {
-        RouteSegment segment = new RouteSegment(arr_time, dep_time, airpt_id_to, airpt_id_from, route);
-        segment.primary_key = new RouteSegmentPK(route.route_id, 1);
-        segment.save();
     }
 
     private RouteSegment(Integer arr_time, Integer dep_time, String airpt_id_to, String airpt_id_from, Route route) {
@@ -53,4 +50,16 @@ public class RouteSegment extends Model {
         this.route = route;
     }
 
+    public Integer getSeg_no() {
+        return seg_no;
+    }
+
+    public void setSeg_no(Integer seg_no) {
+        this.seg_no = seg_no;
+    }
+    
+    public static void create(Integer arr_time, Integer dep_time, String airpt_id_to, String airpt_id_from, Route route) {
+        RouteSegment segment = new RouteSegment(arr_time, dep_time, airpt_id_to, airpt_id_from, route);
+        segment.save();
+    }    
 }

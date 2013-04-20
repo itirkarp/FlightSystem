@@ -45,10 +45,14 @@ header h1 {
     padding-right: 10%;
 }
 
-#data-table {
+.index-table {
     margin-top: 10%;
 }
 
 .hide {
     display: none;
+}
+
+#segments {
+    margin-top: 5%;
 }
