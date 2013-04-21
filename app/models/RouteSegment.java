@@ -10,7 +10,7 @@ import play.db.ebean.*;
 
 @Entity
 @Table(name = "route_seg")
-@SequenceGenerator(name = "RouteSegmentSeq", sequenceName="RouteSegmentSeq")
+@SequenceGenerator(name = "RouteSegmentSeq", sequenceName="RouteSegmentSeq", allocationSize = 1)
 public class RouteSegment extends Model {
 
     @Id

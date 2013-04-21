@@ -27,6 +27,8 @@ public class RouteController extends Controller {
             put("ROUT_FROM", "Cannot save route. The source airport does not exist");
             put("ROUT_TO", "Cannot save route. The destination airport does not exist");
             put("ROUT_OPERATED_BY", "Cannot save route. The airline does not exist");
+            put("RTSG_TO", "Cannot save route segments. One of the destination airports does not exist");
+            put("RTSG_FROM", "Cannot save route segments. One of the source airports does not exist");
         }
     };
 
@@ -97,13 +99,12 @@ public class RouteController extends Controller {
                 }
                 Ebean.commitTransaction();
             } catch (PersistenceException e) {
+                flash("error", "Cannot create route. A database error occurred: " + e.getMessage());
                 String[] temp = e.getMessage().split("S1784498.");
                 if (temp.length > 1) {
                     temp = temp[1].split("\\) violated");
                     String constraintName = temp[0];
                     flash("error", errorMessages.get(constraintName));
-                } else {
-                    flash("error", "Cannot create route. A database error occurred: " + e.getMessage());
                 }
                 Ebean.rollbackTransaction();
                 return badRequest(route_create.render(filledForm, Airline.all(), Airport.all()));

@@ -2,6 +2,7 @@ package models;
 
 import java.util.*;
 import javax.persistence.*;
+import javax.validation.Valid;
 import play.data.validation.Constraints.Max;
 import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.Min;
@@ -39,6 +40,7 @@ public class Route extends Model {
     @Min(value = 1, message = "Day number cannot be less than 1.")
     public Integer day_no;
 
+    @Valid
     @OneToMany(mappedBy = "route")
     public List<RouteSegment> segments;
     
