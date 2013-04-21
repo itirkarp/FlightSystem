@@ -115,3 +115,40 @@ END;
 
 create sequence RouteSegmentSeq start with 1;
 create sequence FlightSegmentSeq start with 1;
+
+/
+
+create or replace 
+PROCEDURE sp_Update_FLIGHT_Details(pRoute_ID VARCHAR2,pDep_Date VARCHAR2,pArr_Time VARCHAR2,
+pDep_Time VARCHAR2,pAircraft_ID VARCHAR2,pAircraft_Type_ID VARCHAR2,pFlight_ID NUMBER) IS
+vCons_Name VARCHAR(100);
+vRoute_ID route.route_id%type;
+BEGIN
+
+	SELECT route_id INTO vRoute_ID FROM flight WHERE Flight_ID = pFlight_ID;
+	
+	UPDATE flight SET
+		route_ID = pRoute_ID,
+		dep_date = pDep_Date,
+		arr_time = pArr_Time,
+		dep_time = pDep_Time,
+		aircraft_id = pAircraft_ID,
+		aircr_type_id = pAircraft_Type_ID
+		WHERE Flight_ID = pFlight_ID;
+	
+	DELETE FROM flight_seg WHERE route_ID = vRoute_ID;
+	
+	INSERT INTO flight_seg SELECT route_id,pDep_Date,seg_no,arr_time,dep_time,pFlight_ID FROM route_seg WHERE route_id=pRoute_ID;
+	COMMIT;
+EXCEPTION 
+	WHEN OTHERS THEN
+    ROLLBACK;
+		vCons_Name := strip_constraint_name(SQLERRM);
+		IF vCons_Name = 'FLIT_FOR' THEN
+			raise_application_error(-20006, ': Route ID does not exist.'); 
+		ELSIF vCons_Name = 'FLIT_FLOWN_BY' THEN
+			raise_application_error(-20006, ': Aircraft ID does not exist.'); 
+		ELSE
+			raise_application_error(-20006, ': Database error.');
+		END IF;
+END;
