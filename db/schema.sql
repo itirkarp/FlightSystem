@@ -295,6 +295,8 @@ alter table flight_seg drop constraint FLSG_PK;
 alter table flight_seg drop constraint FLSG_FOR;
 --dropping FLIT_PK
 alter table flight drop constraint FLIT_PK;
+-- dropping RTSG_PK
+alter table route_seg drop constraint RTSG_PK;
 
 ----- creating surrogate PKs and replacing the deleted FKs with new PKs
 
@@ -309,6 +311,8 @@ alter table flight_seg add (constraint FLSG_IN foreign key(flight_id) references
 alter table seats_avail add (constraint STAV_FOR foreign key(seg_no) references flight_seg);
 --making new FK for boardingpass
 alter table boardingpass add (constraint bpass_FOR foreign key(seg_no) references flight_seg);
+-- making new PK for route_seg
+alter table route_seg add (constraint RTSG_PK primary key(seg_no));
 
 
 

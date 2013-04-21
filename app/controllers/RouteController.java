@@ -60,6 +60,9 @@ public class RouteController extends Controller {
             try {
                 Route.update(route.route_id, newRoute.arr_time, newRoute.airpt_id_to,
                         newRoute.dep_time, newRoute.airpt_id_from, newRoute.airln_id, newRoute.day_no);
+                for (RouteSegment segment : newRoute.segments) {
+                    RouteSegment.update(segment.seg_no, segment.arr_time, segment.dep_time, segment.airpt_id_to, segment.airpt_id_from);
+                }
             } catch (PersistenceException e) {
                 String[] temp = e.getMessage().split("S1784498.");
                 if (temp.length > 1) {

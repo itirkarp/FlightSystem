@@ -2,6 +2,7 @@ package models;
 
 import java.util.*;
 import javax.persistence.*;
+import play.Logger;
 import play.data.validation.Constraints.Max;
 import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.Min;
@@ -36,7 +37,7 @@ public class RouteSegment extends Model {
     @JoinColumn(name="route_id")
     public Route route;
     
-    public static Finder<String, RouteSegment> find = new Finder(String.class, RouteSegment.class);
+    public static Finder<Integer, RouteSegment> find = new Finder(Integer.class, RouteSegment.class);
 
     public static List<RouteSegment> all() {
         return find.all();
@@ -61,5 +62,14 @@ public class RouteSegment extends Model {
     public static void create(Integer arr_time, Integer dep_time, String airpt_id_to, String airpt_id_from, Route route) {
         RouteSegment segment = new RouteSegment(arr_time, dep_time, airpt_id_to, airpt_id_from, route);
         segment.save();
-    }    
+    }
+    
+    public static void update(Integer seg_no, Integer arr_time, Integer dep_time, String airpt_id_to, String airpt_id_from) {
+        RouteSegment segment = find.ref(seg_no);
+        segment.arr_time = arr_time;
+        segment.dep_time = dep_time;
+        segment.airpt_id_to = airpt_id_to;
+        segment.airpt_id_from = airpt_id_from;
+        segment.update();
+    }
 }
