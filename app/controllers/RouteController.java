@@ -50,13 +50,13 @@ public class RouteController extends Controller {
             return badRequest(route_edit.render(route, filledForm, Airline.all(), Airport.all()));
         } 
         if (newRoute.areAirportsSame()) {
-            return redirect_error(filledForm, "airpt_id_from", "Source and destination airports should be different.");
+            return redirectUpdateError(route, filledForm, "airpt_id_from", "Source and destination airports should be different.");
         } 
         if (!newRoute.airpt_id_from.equals(newRoute.segments.get(0).airpt_id_from)){
-            return redirect_error(filledForm, "airpt_id_from", "Source airport of the route must match the source airport of the first segment.");
+            return redirectUpdateError(route, filledForm, "airpt_id_from", "Source airport of the route must match the source airport of the first segment.");
         }
-        if (!newRoute.airpt_id_to.equals(newRoute.segments.get(newRoute.segments.size() - 1).airpt_id_to)){
-            return redirect_error(filledForm, "airpt_id_to", "Destination airport of the route must match the destination airport of the last segment.");
+        if (!newRoute.airpt_id_to.equals(newRoute.segments.get(route.segments.size() - 1).airpt_id_to)){
+            return redirectUpdateError(route, filledForm, "airpt_id_to", "Destination airport of the route must match the destination airport of the last segment.");
         }
         
         try {
@@ -94,13 +94,13 @@ public class RouteController extends Controller {
             return badRequest(route_create.render(filledForm, Airline.all(), Airport.all()));
         } 
         if (route.areAirportsSame()) {
-            return redirect_error(filledForm, "airpt_id_from", "Source and destination airports should be different.");
+            return redirectSaveError(filledForm, "airpt_id_from", "Source and destination airports should be different.");
         }
         if (!route.airpt_id_from.equals(route.segments.get(0).airpt_id_from)){
-            return redirect_error(filledForm, "airpt_id_from", "Source airport of the route must match the source airport of the first segment.");
+            return redirectSaveError(filledForm, "airpt_id_from", "Source airport of the route must match the source airport of the first segment.");
         }
         if (!route.airpt_id_to.equals(route.segments.get(route.segments.size() - 1).airpt_id_to)){
-            return redirect_error(filledForm, "airpt_id_to", "Destination airport of the route must match the destination airport of the last segment.");
+            return redirectSaveError(filledForm, "airpt_id_to", "Destination airport of the route must match the destination airport of the last segment.");
         }
         
         Ebean.beginTransaction();
@@ -127,11 +127,19 @@ public class RouteController extends Controller {
         return ok(route_index.render(Route.all()));
     }
 
-    private static Result redirect_error(Form<Route> filledForm, String field, String error) {
+    private static Result redirectSaveError(Form<Route> filledForm, String field, String error) {
         ArrayList<ValidationError> errorList = new ArrayList<ValidationError>();
         errorList.add(new ValidationError("", error));
         filledForm.errors().put(field, errorList);
         flash("error", "There were errors in the form:");
         return badRequest(route_create.render(filledForm, Airline.all(), Airport.all()));
+    }
+    
+    private static Result redirectUpdateError(Route route, Form<Route> filledForm, String field, String error) {
+        ArrayList<ValidationError> errorList = new ArrayList<ValidationError>();
+        errorList.add(new ValidationError("", error));
+        filledForm.errors().put(field, errorList);
+        flash("error", "There were errors in the form:");
+        return badRequest(route_edit.render(route, filledForm, Airline.all(), Airport.all()));
     }
 }

@@ -44,12 +44,12 @@
                 <thead></thead>
                 <tbody>
                     <th>Arrival Time</th><th>Departure Time</th><th>Source</th><th>Destination</th>
-                    @for(i <- route.segments.indices) {
+                    @for(i <- routeForm.get().segments.indices) {
                         <tr>
-                            <td><input type="text" class="input-small" name="segments[@i].arr_time" id="segments[@i].arr_time" value=@route.segments.get(i).arr_time></td>
-                            <td><input type="text" class="input-small" name="segments[@i].dep_time" id="segments[@i].dep_time" value=@route.segments.get(i).dep_time></td>
-                            <td><input type="text" class="input-small" name="segments[@i].airpt_id_from" id="segments[@i].airpt_id_from" value=@route.segments.get(i).airpt_id_from></td>
-                            <td><input type="text" class="input-small" name="segments[@i].airpt_id_to" id="segments[@i].airpt_id_to" value=@route.segments.get(i).airpt_id_to></td>
+                            <td><input type="text" class="input-small" name="segments[@i].arr_time" id="segments[@i].arr_time" value=@routeForm.get().segments.get(i).arr_time></td>
+                            <td><input type="text" class="input-small" name="segments[@i].dep_time" id="segments[@i].dep_time" value=@routeForm.get().segments.get(i).dep_time></td>
+                            <td><input type="text" class="input-small" name="segments[@i].airpt_id_from" id="segments[@i].airpt_id_from" value=@routeForm.get().segments.get(i).airpt_id_from></td>
+                            <td><input type="text" class="input-small" name="segments[@i].airpt_id_to" id="segments[@i].airpt_id_to" value=@routeForm.get().segments.get(i).airpt_id_to></td>
                             <input type="hidden" name="segments[@i].seg_no" id="segments[@i].seg_no" value=@route.segments.get(i).seg_no>
                         </tr>
                     }
