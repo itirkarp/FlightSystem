@@ -91,8 +91,8 @@ BEGIN
 	COMMIT;
 EXCEPTION 
 	WHEN OTHERS THEN
-    ROLLBACK;
-		raise_application_error(-20009, SQLERRM);
+        ROLLBACK;
+	raise_application_error(-20007, SQLERRM);
 END;
 
 /
@@ -119,9 +119,8 @@ create sequence FlightSegmentSeq start with 1;
 /
 
 create or replace 
-PROCEDURE sp_Update_FLIGHT_Details(pRoute_ID VARCHAR2,pDep_Date VARCHAR2,pArr_Time VARCHAR2,
-pDep_Time VARCHAR2,pAircraft_ID VARCHAR2,pAircraft_Type_ID VARCHAR2,pFlight_ID NUMBER) IS
-vCons_Name VARCHAR(100);
+PROCEDURE sp_Update_FLIGHT_Details(pRoute_ID VARCHAR2,pDep_Date VARCHAR2,pArr_Time NUMBER,
+pDep_Time NUMBER,pAircraft_ID VARCHAR2,pAircraft_Type_ID VARCHAR2,pFlight_ID NUMBER) IS
 vRoute_ID route.route_id%type;
 BEGIN
 
@@ -142,13 +141,6 @@ BEGIN
 	COMMIT;
 EXCEPTION 
 	WHEN OTHERS THEN
-    ROLLBACK;
-		vCons_Name := strip_constraint_name(SQLERRM);
-		IF vCons_Name = 'FLIT_FOR' THEN
-			raise_application_error(-20006, ': Route ID does not exist.'); 
-		ELSIF vCons_Name = 'FLIT_FLOWN_BY' THEN
-			raise_application_error(-20006, ': Aircraft ID does not exist.'); 
-		ELSE
-			raise_application_error(-20006, ': Database error.');
-		END IF;
+        ROLLBACK;
+	raise_application_error(-20008, SQLERRM);
 END;

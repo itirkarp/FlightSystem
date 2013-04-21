@@ -16,8 +16,8 @@ public class FlightController extends Controller {
     static Form<Flight> flightForm = Form.form(Flight.class);
     static final HashMap<String, String> errorMessages = new HashMap<String, String>() {
         {
-            put("FLIT_PK", "Cannot create flight. This flight already exists.");
-            put("FLIT_FOR", "Cannot create flight. Route ID does not exist.");
+            put("FLIT_PK", "Cannot save flight. This flight already exists.");
+            put("FLIT_FOR", "Cannot save flight. Route ID does not exist.");
         }
     };
 
@@ -64,7 +64,18 @@ public class FlightController extends Controller {
             Flight flight = Flight.find.ref(id);
             return badRequest(flight_edit.render(flight, filledForm, AircraftType.all(), Aircraft.all(), Route.all()));
         } else {
-            Flight.update(filledForm.get().flight_id, filledForm.get().route_id, filledForm.get().dep_date, filledForm.get().arr_time, filledForm.get().dep_time, filledForm.get().aircraft_id, filledForm.get().aircr_type_id);
+            try {
+                Flight.update(filledForm.get().flight_id, filledForm.get().route_id, filledForm.get().dep_date, filledForm.get().arr_time, filledForm.get().dep_time, filledForm.get().aircraft_id, filledForm.get().aircr_type_id);
+            } catch (SQLException e) {
+                String[] temp = e.getMessage().split("S1784498.");
+                if (temp.length > 1) {
+                    temp = temp[1].split("\\) violated");
+                    String constraintName = temp[0];
+                    flash("error", errorMessages.get(constraintName));
+                } else {
+                    flash("error", "Cannot save flight. A database error occurred: " + e.getMessage());
+                }
+            }
         }
         return ok(flight_index.render(Flight.all()));
     }

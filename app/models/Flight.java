@@ -77,15 +77,17 @@ public class Flight extends Model {
         callableStatement.executeUpdate();
     }
 
-    public static void update(Integer flight_id, String route_id, Date dep_date, Integer arr_time, Integer dep_time, String aircraft_id, String aircr_type_id) {
-        Flight flight = find.ref(flight_id);
-        flight.route_id = route_id;
-        flight.dep_date = dep_date;
-        flight.arr_time = arr_time;
-        flight.dep_time = dep_time;
-        flight.aircraft_id = aircraft_id;
-        flight.aircr_type_id = aircr_type_id;
-        flight.update();
+    public static void update(Integer flight_id, String route_id, Date dep_date, Integer arr_time, Integer dep_time, String aircraft_id, String aircr_type_id) throws SQLException {
+        String storedProc = "{call sp_Update_FLIGHT_Details(?,?,?,?,?,?,?)}";
+        callableStatement = connection.prepareCall(storedProc);
+        callableStatement.setString(1, route_id);
+        callableStatement.setDate(2, new java.sql.Date(dep_date.getTime()));
+        callableStatement.setInt(3, arr_time);
+        callableStatement.setInt(4, dep_time);
+        callableStatement.setString(5, aircraft_id);
+        callableStatement.setString(6, aircr_type_id);
+        callableStatement.setInt(7, flight_id);
+        callableStatement.executeUpdate();
     }
 
     public static void deleteFlight(Integer flight_id) throws SQLException {
