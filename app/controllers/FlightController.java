@@ -52,7 +52,7 @@ public class FlightController extends Controller {
 
     public static Result edit(Integer id) {
         Flight flight = Flight.find.ref(id);
-        return ok(flight_edit.render(flight, flightForm.fill(flight), AircraftType.all(), Aircraft.all()));
+        return ok(flight_edit.render(flight, flightForm.fill(flight), AircraftType.all(), Aircraft.all(), Route.all()));
     }
 
     public static Result update(Integer id) {
@@ -60,7 +60,7 @@ public class FlightController extends Controller {
         if (filledForm.hasErrors()) {
             flash("error", "There were errors in the form:");
             Flight flight = Flight.find.ref(id);
-            return badRequest(flight_edit.render(flight, filledForm, AircraftType.all(), Aircraft.all()));
+            return badRequest(flight_edit.render(flight, filledForm, AircraftType.all(), Aircraft.all(), Route.all()));
         } else {
             Flight.update(filledForm.get().flight_id, filledForm.get().route_id, filledForm.get().dep_date, filledForm.get().arr_time, filledForm.get().dep_time, filledForm.get().aircraft_id, filledForm.get().aircr_type_id);
         }
