@@ -11,10 +11,20 @@ $(document).ready(function(){
     
     $("#add-segment").click(function() {
         var n = $('table tr').length - 1;
-        $('table > tbody:last').append('<tr><td><input type="text" class="input-small" name="segments[' + n + '].arr_time" id="segments[' + n + '].arr_time"></td><td><input type="text" class="input-small" name="segments[' + n + '].dep_time" id="segments[' + n + '].dep_time"></td><td><input type="text" class="input-small" name="segments[' + n + '].airpt_id_from" id="segments[' + n + '].airpt_id_from"></td><td><input type="text" class="input-small" name="segments[' + n + '].airpt_id_to" id="segments[' + n + '].airpt_id_to"></td><td><a class="btn" id="delete-segment"><i class="icon-remove"></i> Delete</a></td></tr>');
+        $('table > tbody:last').append('<tr><td><input type="text" class="input-small" name="segments[' + n + '].arr_time" id="segments[' + n + '].arr_time"></td>' 
+            + '<td><input type="text" class="input-small" name="segments[' + n + '].dep_time" id="segments[' + n + '].dep_time"></td>' 
+            + '<td><input type="text" class="input-small" name="segments[' + n + '].airpt_id_from" id="segments[' + n + '].airpt_id_from"></td>' 
+            + '<td><input type="text" class="input-small" name="segments[' + n + '].airpt_id_to" id="segments[' + n + '].airpt_id_to"></td>' 
+            + '<td><a class="btn delete-segment"><i class="icon-remove"></i> Delete</a></td></tr>');
+        $('.delete-segment').unbind('click', deleteSegmentRow);
+        $('.delete-segment').bind('click', deleteSegmentRow);
     });
 
 });
+
+var deleteSegmentRow = function() {
+    $(this).parent().parent().remove();
+}
 
 function bindShowSegment() {
     $('a[id$="show-segment"]').click(function(){

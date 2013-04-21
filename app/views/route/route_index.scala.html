@@ -5,13 +5,13 @@
         <div class="span6">@common.search()</div>
         <div class="span6"><a href=@routes.RouteController.create() class="btn btn-primary pull-right">New Route</a></div>
     </div>
-    <table class="table table-striped index-table" id="data-table">
+    <table class="table index-table" id="data-table">
         <thead></thead>
         <tbody>
         <th></th><th>Route ID</th><th>Source</th><th>Destination</th><th>Departure</th>
         <th>Arrival</th><th>Airline ID</th><th>Day</th><th></th><th></th>
         @for(route <- routeList) {
-            <tr>
+            <tr class="route-row">
                 <td><a id=@route.route_id.concat("-show-segment") href="javascript:void(0);"><i class="icon-arrow-down"></i>Segments</a></td>
                 <td>@route.route_id</td>
                 <td>@route.airpt_id_from</td>

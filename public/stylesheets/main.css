@@ -56,3 +56,7 @@ header h1 {
 #segments {
     margin-top: 5%;
 }
+
+.route-row {
+    background-color: #f9f9f9;
+}
