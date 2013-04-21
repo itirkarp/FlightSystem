@@ -64,13 +64,13 @@ public class Aircraft extends Model{
         aircraft.update();
     }
  
-    public static void deleteAircraft(String aircr_type_id) throws SQLException {
+    public static void deleteAircraft(String id) throws SQLException {
         Connection connection = null;
         CallableStatement callableStatement = null;
         connection = play.db.DB.getConnection();
         String storedProc = "{call SP_DELETE_AIRCRAFT(?)}";
         callableStatement = connection.prepareCall(storedProc);
-        callableStatement.setString(1, aircr_type_id);
+        callableStatement.setString(1, id);
         callableStatement.executeUpdate();
     }
 }

@@ -22,15 +22,6 @@ end;
 
 /
 
-create or replace trigger tr_delete_route_seg
-after delete on route
-for each row
-begin
-  delete from route_seg where route_id = :old.route_id;
-end;
-
-/
-
 CREATE OR REPLACE TRIGGER trg_Update_Segment_Details
 AFTER UPDATE ON ROUTE
 FOR EACH ROW
@@ -58,11 +49,27 @@ end;
 
 /
 
-ALTER TABLE ROUTE_SEG DROP CONSTRAINT RTSG_IN;
+CREATE OR REPLACE PROCEDURE SP_DELETE_AIRCRAFT(pAircraft_id VARCHAR2) AS
+child_exists exception;
+pragma exception_init (child_exists , -02292);
+begin
+  delete from aircraft where aircraft_id = pAircraft_id;
+exception
+   when child_exists  then
+      raise_application_error(-20005, ': Cannot delete aircraft. A flight exists for this aircraft .'); 
+end;
 
 /
 
-ALTER TABLE ROUTE_SEG ADD CONSTRAINT RTSG_IN FOREIGN KEY (ROUTE_ID) REFERENCES ROUTE (ROUTE_ID) ON DELETE CASCADE;
+CREATE OR REPLACE PROCEDURE SP_DELETE_FLIGHT(pFlight_id VARCHAR2) AS
+child_exists exception;
+pragma exception_init (child_exists , -02292);
+begin
+  delete from Flight where flight_id = pFlight_id;
+exception
+   when child_exists  then
+      raise_application_error(-20006, ': Cannot delete flight. A flight segment exists for this flight .'); 
+end;
 
 /
 

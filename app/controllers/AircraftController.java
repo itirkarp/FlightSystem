@@ -15,7 +15,7 @@ public class AircraftController extends Controller {
     static Form<Aircraft> aircraftForm = Form.form(Aircraft.class);
     static final HashMap<String, String> errorMessages = new HashMap<String, String>() {
         {
-            put("ORA-20005", "Cannot delete aircraft. A Flight exists for this aircraft.");
+            put("ORA-20005", "Cannot delete aircraft. A flight exists for this aircraft.");
             put("AIRC_PK", "Cannot create aircraft. This aircraft already exists.");
         }
     };

@@ -275,6 +275,12 @@ alter table route modify (arr_time default 0);
 alter table route modify (dep_time default 0);
 alter table route modify (day_no default 0);
 
+ALTER TABLE ROUTE_SEG DROP CONSTRAINT RTSG_IN;
+
+/
+
+ALTER TABLE ROUTE_SEG ADD CONSTRAINT RTSG_IN FOREIGN KEY (ROUTE_ID) REFERENCES ROUTE (ROUTE_ID) ON DELETE CASCADE;
+
 ----- dropping FKs which are referring to composite PKs, so that we can drop composite PKs and create surrogate PKs
 
 --dropping BPASS_FOR

@@ -1,0 +1,37 @@
+@(flights: List[Flight])
+
+@main("EasyFly") {
+    @common.error()
+    <div id="search">
+        <div class="span6">@common.search()</div>
+        <div class="span6"><a href=@routes.FlightController.create() class="btn btn-primary pull-right">New Flight</a></div>
+    </div>
+    <table class="table table-striped" id="data-table">
+        <thead></thead>
+        <tbody>
+        <th>Flight</th><th>Route</th><th>Departure Date</th><th>Arrival time</th><th>Departure time</th><th>Aircraft</th><th>Aircraft Type</th><th></th><th></th>
+        @for(flight <- flights) {
+            <tr>
+                <td>@flight.flight_id</td>
+                <td>@flight.route_id</td>
+                <td>@flight.dep_date.format("dd MMM yyyy")</td>
+                <td>@flight.arr_time</td>
+                <td>@flight.dep_time</td>
+                <td>@flight.aircraft_id</td>
+                <td>@flight.aircr_type_id</td>
+                <td>
+                    <a href=@routes.FlightController.edit(flight.flight_id)>
+                        <i class="icon-pencil"></i> Edit
+                    </a>
+                </td>
+                <td>
+                    <a href="" path=@routes.FlightController.delete(flight.flight_id) role="button" data-toggle="modal" data-target="#delete-modal" class="delete-link">
+                        <i class="icon-remove"></i> Delete
+                    </a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    @common.delete_confirmation(routes.FlightController.index())
+}
