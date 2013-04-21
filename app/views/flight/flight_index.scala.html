@@ -9,14 +9,15 @@
     <table class="table index-table" id="data-table">
         <thead></thead>
         <tbody>
-        <th></th><th>Flight</th><th>Route</th><th>Departure Date</th><th>Arrival time</th><th>Departure time</th><th>Aircraft</th><th>Aircraft Type</th><th></th><th></th>
+        <th></th><th>Flight</th><th>Route</th><th>Departure Date</th><th>Arrival</th><th>Departure</th><th>Aircraft</th><th>Aircraft Type</th><th></th><th></th>
         @for(flight <- flights) {
             <tr class="route-row">
                 <td><a id=@flight.flight_id.toString().concat("-show-segment") href="javascript:void(0);"><i class="icon-arrow-down"></i>Segments</a></td>
+                <td>@flight.flight_id</td>
                 <td>@flight.route_id</td>
                 <td>@flight.dep_date.format("dd MMM yyyy")</td>
-                <td>@flight.arr_time</td>
-                <td>@flight.dep_time</td>
+                <td>@String.format("%04d", int2Integer(flight.arr_time))</td>
+                <td>@String.format("%04d", int2Integer(flight.dep_time))</td>
                 <td>@flight.aircraft_id</td>
                 <td>@flight.aircr_type_id</td>
                 <td>
@@ -35,9 +36,9 @@
                     <th>Segments:</th>
                     <td></td>
                     <td>@segment.route_id</td>
-                    <td>@segment.dep_date</td>
-                    <td>@segment.arr_time</td>
-                    <td>@segment.dep_time</td>
+                    <td>@segment.dep_date.format("dd MMM yyyy")</td>
+                    <td>@String.format("%04d", int2Integer(segment.arr_time))</td>
+                    <td>@String.format("%04d", int2Integer(segment.dep_time))</td>
                     <td></td><td></td><td></td><td></td>
                 </tr>
             }

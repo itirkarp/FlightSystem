@@ -44,8 +44,8 @@
                     <td></td>
                     <td>@segment.airpt_id_from</td>
                     <td>@segment.airpt_id_to</td>
-                    <td>@segment.dep_time</td>
-                    <td>@segment.arr_time</td>
+                    <td>@String.format("%04d", int2Integer(segment.dep_time))</td>
+                    <td>@String.format("%04d", int2Integer(segment.arr_time))</td>
                     <td></td><td></td><td></td><td></td>
                 </tr>
             }
