@@ -82,24 +82,17 @@ END pkg_EasyFly_Maintenance;
 /
 
 create or replace 
-PROCEDURE sp_ADD_FLIGHT(pRoute_ID VARCHAR2,pDep_Date VARCHAR2,pArr_Time VARCHAR2,
-pDep_Time VARCHAR2,pAircraft_ID VARCHAR2,pAircraft_Type_ID VARCHAR2,pFlight_ID NUMBER) IS
+PROCEDURE sp_ADD_FLIGHT(pRoute_ID VARCHAR2,pDep_Date VARCHAR2,pArr_Time NUMBER,
+pDep_Time NUMBER,pAircraft_ID VARCHAR2,pAircraft_Type_ID VARCHAR2,pFlight_ID NUMBER) IS
 vCons_Name VARCHAR(100);
 BEGIN
 	INSERT INTO flight values(pRoute_ID,pDep_Date,pArr_Time,pDep_Time,pAircraft_ID,pAircraft_Type_ID,pFlight_ID);
-	INSERT INTO flight_seg SELECT route_id,pDep_Date,seg_no,arr_time,dep_time,pFlight_ID FROM route_seg WHERE route_id=pRoute_ID;
+	INSERT INTO flight_seg SELECT route_id,pDep_Date,FlightSegmentSeq.nextval,arr_time,dep_time,pFlight_ID FROM route_seg WHERE route_id=pRoute_ID;
 	COMMIT;
 EXCEPTION 
 	WHEN OTHERS THEN
     ROLLBACK;
-		vCons_Name := strip_constraint_name(SQLERRM);
-		IF vCons_Name = 'FLIT_FOR' THEN
-			raise_application_error(-20005, ': Route ID does not exist.'); 
-		ELSIF vCons_Name = 'FLIT_FLOWN_BY' THEN
-			raise_application_error(-20005, ': Aircraft ID does not exist.'); 
-		ELSE
-			raise_application_error(-20005, ': Database error.');
-		END IF;
+		raise_application_error(-20009, SQLERRM);
 END;
 
 /
@@ -121,3 +114,4 @@ END IF;
 END;
 
 create sequence RouteSegmentSeq start with 1;
+create sequence FlightSegmentSeq start with 1;

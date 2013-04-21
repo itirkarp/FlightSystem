@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.PersistenceException;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 import play.data.validation.Constraints.Max;
 import play.data.validation.Constraints.MaxLength;
@@ -42,7 +42,13 @@ public class Flight extends Model {
     @MaxLength(value = 6, message = "Aircraft type ID cannot be more than 6 characters")
     public String aircr_type_id;
     
+    @OneToMany(mappedBy = "flight")
+    public List<FlightSegment> segments;
+    
     public static Model.Finder<Integer, Flight> find = new Model.Finder(Integer.class, Flight.class);
+            
+    public static Connection connection = play.db.DB.getConnection();
+    public static CallableStatement callableStatement = null;
 
     public Flight(Integer flight_id, String route_id, Date dep_date, Integer arr_time, Integer dep_time, String aircraft_id, String aircr_type_id) {
         this.flight_id = flight_id;
@@ -58,8 +64,17 @@ public class Flight extends Model {
         return find.all();
     }
 
-    public static void create(Flight flight) throws PersistenceException {
-        flight.save();
+    public static void create(Flight flight) throws SQLException {
+        String storedProc = "{call sp_ADD_FLIGHT(?,?,?,?,?,?,?)}";
+        callableStatement = connection.prepareCall(storedProc);
+        callableStatement.setString(1, flight.route_id);
+        callableStatement.setDate(2, new java.sql.Date(flight.dep_date.getTime()));
+        callableStatement.setInt(3, flight.arr_time);
+        callableStatement.setInt(4, flight.dep_time);
+        callableStatement.setString(5, flight.aircraft_id);
+        callableStatement.setString(6, flight.aircr_type_id);
+        callableStatement.setInt(7, flight.flight_id);
+        callableStatement.executeUpdate();
     }
 
     public static void update(Integer flight_id, String route_id, Date dep_date, Integer arr_time, Integer dep_time, String aircraft_id, String aircr_type_id) {
@@ -74,9 +89,6 @@ public class Flight extends Model {
     }
 
     public static void deleteFlight(Integer flight_id) throws SQLException {
-        Connection connection = null;
-        CallableStatement callableStatement = null;
-        connection = play.db.DB.getConnection();
         String storedProc = "{call SP_DELETE_FLIGHT(?)}";
         callableStatement = connection.prepareCall(storedProc);
         callableStatement.setInt(1, flight_id);

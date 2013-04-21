@@ -291,6 +291,8 @@ alter table seats_avail drop constraint STAV_FOR;
 alter table flight_seg drop constraint FLSG_IN;
 --dropping FLSG_PK
 alter table flight_seg drop constraint FLSG_PK;
+-- dropping FLSG_FOR
+alter table flight_seg drop constraint FLSG_FOR;
 --dropping FLIT_PK
 alter table flight drop constraint FLIT_PK;
 
@@ -302,7 +304,7 @@ alter table flight add (constraint FLIT_PK primary key(flight_id));
 alter table flight_seg add (constraint FLSG_PK primary key(seg_no));
 --making new FK for flight_seg
 alter table flight_seg add flight_id number(2,0) not null;
-alter table flight_seg add (constraint FLSG_IN foreign key(flight_id) references flight);
+alter table flight_seg add (constraint FLSG_IN foreign key(flight_id) references flight ON DELETE CASCADE);
 --making new FK for seats_avail
 alter table seats_avail add (constraint STAV_FOR foreign key(seg_no) references flight_seg);
 --making new FK for boardingpass

@@ -2,7 +2,6 @@ package controllers;
 
 import java.sql.SQLException;
 import java.util.HashMap;
-import javax.persistence.PersistenceException;
 import models.Aircraft;
 import models.AircraftType;
 import models.Flight;
@@ -17,8 +16,8 @@ public class FlightController extends Controller {
     static Form<Flight> flightForm = Form.form(Flight.class);
     static final HashMap<String, String> errorMessages = new HashMap<String, String>() {
         {
-            put("ORA-20006", "Cannot delete Flight. A flight segment exists for this flight.");
-            put("AIRC_PK", "Cannot create aircraft. This aircraft already exists.");
+            put("FLIT_PK", "Cannot create flight. This flight already exists.");
+            put("FLIT_FOR", "Cannot create flight. Route ID does not exist.");
         }
     };
 
@@ -30,7 +29,7 @@ public class FlightController extends Controller {
         return ok(flight_create.render(flightForm, Route.all(), AircraftType.all(), Aircraft.all()));
     }
 
-    public static Result save() {
+    public static Result save() throws SQLException {
         Form<Flight> filledForm = flightForm.bindFromRequest();
         if (filledForm.hasErrors()) {
             flash("error", "There were errors in the form:");
@@ -38,11 +37,14 @@ public class FlightController extends Controller {
         } else {
             try {
                 Flight.create(filledForm.get());
-            } catch (PersistenceException e) {
-                if (e.getMessage().contains("AIRC_PK")) {
-                    flash("error", "Cannot create aircraft. This aircraft already exists.");
+            } catch (SQLException e) {
+                String[] temp = e.getMessage().split("S1784498.");
+                if (temp.length > 1) {
+                    temp = temp[1].split("\\) violated");
+                    String constraintName = temp[0];
+                    flash("error", errorMessages.get(constraintName));
                 } else {
-                    flash("error", "Cannot create airline. A database error occured.");
+                    flash("error", "Cannot create flight. A database error occurred: " + e.getMessage());
                 }
                 return badRequest(flight_create.render(filledForm, Route.all(), AircraftType.all(), Aircraft.all()));
             }
