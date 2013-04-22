@@ -1,11 +1,13 @@
 package controllers;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.persistence.PersistenceException;
 import models.Aircraft;
 import models.AircraftType;
 import play.data.Form;
+import play.data.validation.ValidationError;
 import play.mvc.*;
 import views.html.aircraft.*;
 
@@ -33,17 +35,25 @@ public class AircraftController extends Controller {
         if (filledForm.hasErrors()) {
             flash("error", "There were errors in the form:");
             return badRequest(aircraft_create.render(filledForm, AircraftType.all()));
-        } else {
-            try {
-                Aircraft.create(filledForm.get());
-            } catch (PersistenceException e) {
-                if (e.getMessage().contains("AIRC_PK")) {
-                    flash("error", "Cannot create aircraft. This aircraft already exists.");
-                } else {
-                    flash("error", "Cannot create airline. A database error occured.");
-                }
-                return badRequest(aircraft_create.render(filledForm, AircraftType.all()));
+        }
+        Aircraft aircraft = filledForm.get();
+        if (aircraft.seatsInvalid()) {
+            ArrayList<ValidationError> errorList = new ArrayList<ValidationError>();
+            errorList.add(new ValidationError("", "Total seats must be less than the maximum seats allowed for this aircraft type."));
+            filledForm.errors().put("seats_qty_B", errorList);            
+            flash("error", "There were errors in the form:");
+            return badRequest(aircraft_create.render(filledForm, AircraftType.all()));
+        }
+
+        try {
+            Aircraft.create(filledForm.get());
+        } catch (PersistenceException e) {
+            if (e.getMessage().contains("AIRC_PK")) {
+                flash("error", "Cannot create aircraft. This aircraft already exists.");
+            } else {
+                flash("error", "Cannot create airline. A database error occured.");
             }
+            return badRequest(aircraft_create.render(filledForm, AircraftType.all()));
         }
         return ok(aircraft_index.render(Aircraft.all()));
     }
@@ -55,13 +65,21 @@ public class AircraftController extends Controller {
 
     public static Result update(String id) {
         Form<Aircraft> filledForm = aircraftForm.bindFromRequest();
+        Aircraft aircraft = Aircraft.find.ref(id);
         if (filledForm.hasErrors()) {
             flash("error", "There were errors in the form:");
-            Aircraft aircraft = Aircraft.find.ref(id);
             return badRequest(aircraft_edit.render(aircraft, filledForm, AircraftType.all()));
-        } else {
-            Aircraft.update(filledForm.get().aircraft_id, filledForm.get().aircraft_name, filledForm.get().aircr_type_id, filledForm.get().seats_qty_F, filledForm.get().seats_qty_B, filledForm.get().seats_qty_E);
         }
+        Aircraft newAircraft = filledForm.get();
+        if (newAircraft.seatsInvalid()) {
+            ArrayList<ValidationError> errorList = new ArrayList<ValidationError>();
+            errorList.add(new ValidationError("", "Total seats must be less than the maximum seats allowed for this aircraft type."));
+            filledForm.errors().put("seats_qty_B", errorList);            
+            flash("error", "There were errors in the form:");
+            return badRequest(aircraft_edit.render(aircraft, filledForm, AircraftType.all()));
+        }
+
+        Aircraft.update(filledForm.get().aircraft_id, filledForm.get().aircraft_name, filledForm.get().aircr_type_id, filledForm.get().seats_qty_F, filledForm.get().seats_qty_B, filledForm.get().seats_qty_E);
         return ok(aircraft_index.render(Aircraft.all()));
     }
     

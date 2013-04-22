@@ -73,4 +73,9 @@ public class Aircraft extends Model{
         callableStatement.setString(1, id);
         callableStatement.executeUpdate();
     }
+
+    public boolean seatsInvalid() {
+        AircraftType type = AircraftType.find.byId(aircr_type_id);
+        return type.maximum_seats < (seats_qty_B + seats_qty_E + seats_qty_F);
+    }
 }
