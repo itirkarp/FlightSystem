@@ -48,5 +48,9 @@ GET     /flight/:id/delete        controllers.FlightController.delete(id: Intege
 GET     /flight/save              controllers.FlightController.save
 GET     /flight/:id/update        controllers.FlightController.update(id: Integer)
 
+GET     /customer                 controllers.CustomerController.index
+GET     /customer/create          controllers.CustomerController.create
+GET     /customer/save            controllers.CustomerController.save
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
