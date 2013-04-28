@@ -16,7 +16,17 @@
                 @inputText(customerForm("cust_addr2"), '_label -> "Address2") 
                 @inputText(customerForm("cust_addr3"), '_label -> "Address3") 
                 @inputText(customerForm("cust_inits"), '_label -> "Initials") 
-                @inputText(customerForm("cust_title"), '_label -> "Title") 
+                <div class="control-group">
+                    <label class="control-label" for="cust_title">Title</label>
+                    <div class="controls">
+                        <select name="cust_title">
+                            <option value="Mr">Mr</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Ms">Ms</option>
+                            <option value="Dr">Dr</option>
+                        </select>
+                    </div>
+                </div>
                 @inputText(customerForm("cust_phone"), '_label -> "Contact number") 
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Save changes</button>

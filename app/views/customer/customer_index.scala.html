@@ -4,14 +4,14 @@
     @common.error()
     <div id="search">
         <div class="span6">@common.search()</div>
-        <div class="span6"><a href=@routes.CustomerController.create() class="btn btn-primary pull-right">New Aircraft Type</a></div>
+        <div class="span6"><a href=@routes.CustomerController.create() class="btn btn-primary pull-right">New customer</a></div>
     </div>
     <table class="table table-striped index-table" id="data-table">
         <thead></thead>
         <tbody>
-        <th>Customer ID</th><th>Surname</th><th>Credit limit</th>
+        <th>Cust ID</th><th>Surname</th><th>Credit limit</th>
         <th>Address1</th><th>Address2</th><th>Address3</th>
-        <th>Initial</th><th>Title</th><th>Phone number</th>
+        <th>Initial</th><th>Title</th><th>Number</th>
         @for(cust <- customers) {
             <tr>
                 <td>@cust.cust_id</td>
