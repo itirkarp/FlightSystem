@@ -83,10 +83,12 @@ END pkg_EasyFly_Maintenance;
 
 create or replace 
 PROCEDURE sp_ADD_FLIGHT(pRoute_ID VARCHAR2,pDep_Date VARCHAR2,pArr_Time NUMBER,
-pDep_Time NUMBER,pAircraft_ID VARCHAR2,pAircraft_Type_ID VARCHAR2,pFlight_ID NUMBER) IS
+pDep_Time NUMBER,pAircraft_ID VARCHAR2,pFlight_ID NUMBER) IS
 vCons_Name VARCHAR(100);
+vAircraft_type_id varchar2(5);
 BEGIN
-	INSERT INTO flight values(pRoute_ID,pDep_Date,pArr_Time,pDep_Time,pAircraft_ID,pAircraft_Type_ID,pFlight_ID);
+        select aircr_type_id into vAircraft_type_id from aircraft where aircraft_id = pAircraft_ID;
+	INSERT INTO flight values(pRoute_ID,pDep_Date,pArr_Time,pDep_Time,pAircraft_ID,vAircraft_type_id,pFlight_ID);
 	INSERT INTO flight_seg SELECT route_id,pDep_Date,FlightSegmentSeq.nextval,arr_time,dep_time,pFlight_ID FROM route_seg WHERE route_id=pRoute_ID;
 	COMMIT;
 EXCEPTION 
@@ -120,19 +122,20 @@ create sequence FlightSegmentSeq start with 1;
 
 create or replace 
 PROCEDURE sp_Update_FLIGHT_Details(pRoute_ID VARCHAR2,pDep_Date VARCHAR2,pArr_Time NUMBER,
-pDep_Time NUMBER,pAircraft_ID VARCHAR2,pAircraft_Type_ID VARCHAR2,pFlight_ID NUMBER) IS
+pDep_Time NUMBER,pAircraft_ID VARCHAR2,pFlight_ID NUMBER) IS
 vRoute_ID route.route_id%type;
+vAircraft_type_id varchar2(5);
 BEGIN
 
 	SELECT route_id INTO vRoute_ID FROM flight WHERE Flight_ID = pFlight_ID;
-	
+	select aircr_type_id into vAircraft_type_id from aircraft where aircraft_id = pAircraft_ID;
 	UPDATE flight SET
 		route_ID = pRoute_ID,
 		dep_date = pDep_Date,
 		arr_time = pArr_Time,
 		dep_time = pDep_Time,
 		aircraft_id = pAircraft_ID,
-		aircr_type_id = pAircraft_Type_ID
+		aircr_type_id = vAircraft_type_id
 		WHERE Flight_ID = pFlight_ID;
 	
 	DELETE FROM flight_seg WHERE route_ID = vRoute_ID;

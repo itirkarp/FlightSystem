@@ -38,8 +38,6 @@ public class Flight extends Model {
     @Required(message = "Aircraft ID is required.")
     @MaxLength(value = 6, message = "Aircraft ID cannot be more than 6 characters")
     public String aircraft_id;
-    @Required(message = "Aircraft type ID is required.")
-    @MaxLength(value = 6, message = "Aircraft type ID cannot be more than 6 characters")
     public String aircr_type_id;
     
     @OneToMany(mappedBy = "flight")
@@ -65,28 +63,26 @@ public class Flight extends Model {
     }
 
     public static void create(Flight flight) throws SQLException {
-        String storedProc = "{call sp_ADD_FLIGHT(?,?,?,?,?,?,?)}";
+        String storedProc = "{call sp_ADD_FLIGHT(?,?,?,?,?,?)}";
         callableStatement = connection.prepareCall(storedProc);
         callableStatement.setString(1, flight.route_id);
         callableStatement.setDate(2, new java.sql.Date(flight.dep_date.getTime()));
         callableStatement.setInt(3, flight.arr_time);
         callableStatement.setInt(4, flight.dep_time);
         callableStatement.setString(5, flight.aircraft_id);
-        callableStatement.setString(6, flight.aircr_type_id);
-        callableStatement.setInt(7, flight.flight_id);
+        callableStatement.setInt(6, flight.flight_id);
         callableStatement.executeUpdate();
     }
 
-    public static void update(Integer flight_id, String route_id, Date dep_date, Integer arr_time, Integer dep_time, String aircraft_id, String aircr_type_id) throws SQLException {
-        String storedProc = "{call sp_Update_FLIGHT_Details(?,?,?,?,?,?,?)}";
+    public static void update(Integer flight_id, String route_id, Date dep_date, Integer arr_time, Integer dep_time, String aircraft_id) throws SQLException {
+        String storedProc = "{call sp_Update_FLIGHT_Details(?,?,?,?,?,?)}";
         callableStatement = connection.prepareCall(storedProc);
         callableStatement.setString(1, route_id);
         callableStatement.setDate(2, new java.sql.Date(dep_date.getTime()));
         callableStatement.setInt(3, arr_time);
         callableStatement.setInt(4, dep_time);
         callableStatement.setString(5, aircraft_id);
-        callableStatement.setString(6, aircr_type_id);
-        callableStatement.setInt(7, flight_id);
+        callableStatement.setInt(6, flight_id);
         callableStatement.executeUpdate();
     }
 

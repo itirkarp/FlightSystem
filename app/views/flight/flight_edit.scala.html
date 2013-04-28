@@ -19,7 +19,6 @@
                 @inputText(flightForm("dep_date"), '_label -> "Departure date")
                 @inputText(flightForm("arr_time"), '_label -> "Arrival time")
                 @inputText(flightForm("dep_time"), '_label -> "Departure time")
-                @common.aircraftTypeList("aircr_type_id", aircraftTypes, flightForm)
                 @common.aircraftList("aircraft_id", aircrafts, flightForm) 
                 <input type="hidden" name="flight_id" value=@flight.flight_id>
                 <div class="form-actions">

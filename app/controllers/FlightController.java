@@ -65,7 +65,7 @@ public class FlightController extends Controller {
             return badRequest(flight_edit.render(flight, filledForm, AircraftType.all(), Aircraft.all(), Route.all()));
         } else {
             try {
-                Flight.update(filledForm.get().flight_id, filledForm.get().route_id, filledForm.get().dep_date, filledForm.get().arr_time, filledForm.get().dep_time, filledForm.get().aircraft_id, filledForm.get().aircr_type_id);
+                Flight.update(filledForm.get().flight_id, filledForm.get().route_id, filledForm.get().dep_date, filledForm.get().arr_time, filledForm.get().dep_time, filledForm.get().aircraft_id);
             } catch (SQLException e) {
                 String[] temp = e.getMessage().split("S1784498.");
                 if (temp.length > 1) {

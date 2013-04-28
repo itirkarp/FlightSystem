@@ -14,7 +14,6 @@
                 @inputText(flightForm("dep_date"), '_label -> "Departure date (MM/DD/YY)")
                 @inputText(flightForm("arr_time"), '_label -> "Arrival time")
                 @inputText(flightForm("dep_time"), '_label -> "Departure time")
-                @common.aircraftTypeList("aircr_type_id", aircraftTypes, flightForm)
                 @common.aircraftList("aircraft_id", aircrafts, flightForm)
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Save changes</button>
