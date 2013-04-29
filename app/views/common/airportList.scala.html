@@ -1,16 +1,8 @@
-@(id: String, label: String, airports: List[Airport], form: Form[_ <: Object])
+@(id: String, label: String, airports: List[Airport], form: Form[_ <: Object], className: String, value: String)
 
 <div class="control-group">
     <label class="control-label" for=@id>@label</label>
     <div class="controls">
-        <select name=@id id=@id>
-            @for(airport <- airports) {
-                @if(airport.airpt_id == form(id).value()) {
-                    <option value=@airport.airpt_id selected>@airport.airpt_name</option>
-                } else {
-                    <option value=@airport.airpt_id>@airport.airpt_name</option>
-                }
-            }
-        </select>
+        @common.airportDropDown(id, label, airports, form, className, value)
     </div>
 </div>

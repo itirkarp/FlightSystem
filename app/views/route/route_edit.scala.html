@@ -15,8 +15,8 @@
                             <input type="text" name="route_id" value=@route.route_id disabled="disabled">
                         </div>
                     </div>
-                    @common.airportList("airpt_id_from", "Source Airport", airports, routeForm)
-                    @common.airportList("airpt_id_to", "Destination Airport", airports, routeForm)
+                    @common.airportList("airpt_id_from", "Origin Airport", airports, routeForm, "", routeForm("airpt_id_from").value())
+                    @common.airportList("airpt_id_to", "Destination Airport", airports, routeForm, "", routeForm("airpt_id_to").value())
                     @inputText(routeForm("dep_time"), '_label -> "Departure Time (24 hour format)")
                     @inputText(routeForm("arr_time"), '_label -> "Arrival Time (24 hour format)") 
                     @common.airlineList("airln_id", airlines, routeForm)
@@ -48,8 +48,8 @@
                         <tr>
                             <td><input type="text" class="input-small" name="segments[@i].arr_time" id="segments[@i].arr_time" value=@routeForm.get().segments.get(i).arr_time></td>
                             <td><input type="text" class="input-small" name="segments[@i].dep_time" id="segments[@i].dep_time" value=@routeForm.get().segments.get(i).dep_time></td>
-                            <td><input type="text" class="input-small" name="segments[@i].airpt_id_from" id="segments[@i].airpt_id_from" value=@routeForm.get().segments.get(i).airpt_id_from></td>
-                            <td><input type="text" class="input-small" name="segments[@i].airpt_id_to" id="segments[@i].airpt_id_to" value=@routeForm.get().segments.get(i).airpt_id_to></td>
+                            <td>@(common.airportDropDown("segments[" + i + "].airpt_id_from", "", airports, routeForm, "input-small", routeForm.get().segments.get(i).airpt_id_from))</td>
+                            <td>@(common.airportDropDown("segments[" + i + "].airpt_id_to", "", airports, routeForm, "input-small", routeForm.get().segments.get(i).airpt_id_to))</td>
                             <input type="hidden" name="segments[@i].seg_no" id="segments[@i].seg_no" value=@route.segments.get(i).seg_no>
                         </tr>
                     }

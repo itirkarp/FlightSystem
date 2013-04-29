@@ -18,7 +18,7 @@ public class Customer extends Model{
     
     @Id
     @Required(message = "Customer ID is required.")
-    @MaxLength(value = 6, message = "Customer Id cannot be more than 6 characters")
+    @MaxLength(value = 6, message = "Customer ID cannot be more than 6 characters")
     public String cust_id;
     @Required(message = "Customer surname is required.")
     @MaxLength(value = 30, message = "Customer surname cannot be more than 30 characters")
@@ -27,11 +27,11 @@ public class Customer extends Model{
     @Max(value=999999999, message = "Credit limit cannot be more than 999999999.99")
     public Integer cust_credlim;
     @Required(message = "Customer address is required.")
-    @MaxLength(value = 30, message = "Customer address field cannot be more than 30 characters")
+    @MaxLength(value = 30, message = "Customer address cannot be more than 30 characters")
     public String cust_addr1;
-    @MaxLength(value = 30, message = "Customer address field cannot be more than 30 characters")
+    @MaxLength(value = 30, message = "Customer address cannot be more than 30 characters")
     public String cust_addr2;
-    @MaxLength(value = 30, message = "Customer address field cannot be more than 30 characters")
+    @MaxLength(value = 30, message = "Customer address cannot be more than 30 characters")
     public String cust_addr3;
     @MaxLength(value = 3, message = "Customer initials cannot be more than 3 characters")
     public String cust_inits;

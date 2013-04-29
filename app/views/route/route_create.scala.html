@@ -10,8 +10,8 @@
         <div class="row-fluid">
             <div class="span8">
                 @inputText(routeForm("route_id"), '_label -> "Route ID") 
-                @common.airportList("airpt_id_from", "Source Airport", airports, routeForm)
-                @common.airportList("airpt_id_to", "Destination Airport", airports, routeForm)
+                @common.airportList("airpt_id_from", "Origin Airport", airports, routeForm, "", "")
+                @common.airportList("airpt_id_to", "Destination Airport", airports, routeForm, "", "")
                 @inputText(routeForm("dep_time"), '_label -> "Departure Time")
                 @inputText(routeForm("arr_time"), '_label -> "Arrival Time") 
                 <div class="control-group">
@@ -46,12 +46,12 @@
             <table class="table table-striped route-segments" id="data-table">
             <thead></thead>
             <tbody>
-                <th>Arrival Time</th><th>Departure Time</th><th>Source</th><th>Destination</th><th><a class="btn" id="add-segment"><i class="icon-plus-sign"></i> Add Segment</a></th>
+                <th>Arrival Time</th><th>Departure Time</th><th>Source</th><th>Destination</th><th><a class="btn" id="add-segment"><i class="icon-plus-sign"></i> Add</a></th>
                 <tr>
                     <td><input type="text" class="input-small" name="segments[0].arr_time" id="segments[0].arr_time"></td>
                     <td><input type="text" class="input-small" name="segments[0].dep_time" id="segments[0].dep_time"></td>
-                    <td><input type="text" class="input-small" name="segments[0].airpt_id_from" id="segments[0].airpt_id_from"></td>
-                    <td><input type="text" class="input-small" name="segments[0].airpt_id_to" id="segments[0].airpt_id_to"></td>
+                    <td>@common.airportDropDown("segments[0].airpt_id_from", "", airports, routeForm, "input-small", "")</td>
+                    <td>@common.airportDropDown("segments[0].airpt_id_to", "", airports, routeForm, "input-small", "")</td>
                     <td></td>
                 </tr>
             </tbody>
