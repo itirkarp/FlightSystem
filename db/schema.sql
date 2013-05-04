@@ -32,6 +32,18 @@ airpt_name VARCHAR2(30) NOT  NULL,
 country VARCHAR2(30) NOT  NULL
 );  
 
+CREATE  TABLE  ticket(  
+ticket_no NUMBER(8,0) NOT  NULL,
+fare  NUMBER(7,2) NOT  NULL,
+issue_date DATE NOT  NULL,
+cust_id  VARCHAR2(6) NOT  NULL,
+pass_surname VARCHAR2(30) NOT  NULL,
+pass_inits VARCHAR2(3) NULL,
+pass_title VARCHAR2(10) NULL,
+pass_phone VARCHAR2(15) NULL,
+staff_ind VARCHAR2(1) NULL
+);   
+
 CREATE  TABLE  BOARDINGPASS  (  
 ticket_no NUMBER(8,0) NOT  NULL,
 BPASS_NO NUMBER(3,0) NOT   NULL,
@@ -150,18 +162,6 @@ seat_id  VARCHAR2(4) NOT  NULL,
 class_id VARCHAR2(2) NOT  NULL,
 seat_type VARCHAR2(3) NOT  NULL,
 seat_pos VARCHAR2(1) NOT  NULL
-);   
-
-CREATE  TABLE  ticket(  
-ticket_no NUMBER(8,0) NOT  NULL,
-fare  NUMBER(7,2) NOT  NULL,
-issue_date DATE NOT  NULL,
-cust_id  VARCHAR2(6) NOT  NULL,
-pass_surname VARCHAR2(30) NOT  NULL,
-pass_inits VARCHAR2(3) NULL,
-pass_title VARCHAR2(10) NULL,
-pass_phone VARCHAR2(15) NULL,
-staff_ind VARCHAR2(1) NULL
 );   
 
 ALTER TABLE AIRCRAFT ADD (
@@ -317,7 +317,8 @@ alter table boardingpass add (constraint bpass_FOR foreign key(seg_no) reference
 alter table route_seg add (constraint RTSG_PK primary key(seg_no));
 -- making new PK for boardingpass
 alter table boardingpass add (constraint BPASS_PK primary key(bpass_no));
-
+-- increasing the capacity of bpass_no
+Alter table boardingpass MODIFY bpass_no number(4,0);
 
 
 -----------------------------------------------------------------------------------------

@@ -1,0 +1,9 @@
+@()
+
+@main("EasyFly") {
+    @common.error()
+    <div id="search">
+        <div class="span6">@common.search()</div>
+        <div class="span6"><a href=@routes.BookingController.create() class="btn btn-primary pull-right">New Booking</a></div>
+    </div>
+}

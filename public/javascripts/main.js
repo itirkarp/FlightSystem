@@ -28,6 +28,8 @@ $(document).ready(function(){
         $('.delete-segment').unbind('click', deleteSegmentRow);
         $('.delete-segment').bind('click', deleteSegmentRow);
     });
+    
+    bindBookingSearch();
 
 });
 
@@ -45,5 +47,19 @@ function bindShowSegment() {
             $(element).addClass("hide");
             $(this).html("<i class=\"icon-arrow-down\"></i>Segments");
         }
+    });
+}
+
+function bindBookingSearch() {
+    $('#get-flights').click(function(e) {
+        $.post('/booking/flights', {
+            origin: $('#origin').val(),
+            destination: $('#destination').val(),
+            class_id: $('#class').val(),
+            date: $('#date').val()
+        }, function(data) {
+            $('#flights').html(data);
+        });
+        e.preventDefault();
     });
 }

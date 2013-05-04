@@ -1,0 +1,16 @@
+@(flights : List[FlightInfo])
+<table class="table table-striped index-table" id="data-table">
+    <thead></thead>
+    <tbody>
+        <th>Route ID</th><th>Departure Date</th><th>Departure Time</th><th>Arrival Time</th><th>Seats Available</th>
+        @for(flight <- flights) {
+            <tr>
+                <td>@flight.route_id</td>
+                <td>@flight.dep_date</td>
+                <td>@flight.dep_time</td>
+                <td>@flight.arr_time</td>
+                <td>@flight.seats_avail</td>
+            </tr>
+        }
+    </tbody>
+</table>

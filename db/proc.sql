@@ -117,6 +117,8 @@ END;
 
 create sequence RouteSegmentSeq start with 1;
 create sequence FlightSegmentSeq start with 1;
+create sequence TicketSeq start with 1;
+create sequence BoardingPassSeq start with 1;
 
 /
 
