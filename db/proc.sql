@@ -86,20 +86,11 @@ PROCEDURE sp_ADD_FLIGHT(pRoute_ID VARCHAR2,pDep_Date VARCHAR2,pArr_Time NUMBER,
 pDep_Time NUMBER,pAircraft_ID VARCHAR2,pFlight_ID NUMBER) IS
 vCons_Name VARCHAR(100);
 vAircraft_type_id varchar2(5);
-vFirstClass NUMBER;
-vBusinessClass NUMBER;
-vEconomyClass NUMBER;
-vFlightSegNo NUMBER;
 BEGIN
-  vFlightSegNo := FlightSegmentSeq.nextval;
-  SELECT aircr_type_id into vAircraft_type_id from aircraft where aircraft_id = pAircraft_ID;
-  SELECT seats_qty_f, seats_qty_B, seats_qty_E into vFirstClass, vBusinessClass, vEconomyClass from aircraft where aircraft_id = pAircraft_ID;
+        select aircr_type_id into vAircraft_type_id from aircraft where aircraft_id = pAircraft_ID;
 	INSERT INTO flight values(pRoute_ID,pDep_Date,pArr_Time,pDep_Time,pAircraft_ID,vAircraft_type_id,pFlight_ID);
-	INSERT INTO flight_seg SELECT route_id, pDep_Date, vFlightSegNo, arr_time, dep_time, pFlight_ID FROM route_seg WHERE route_id=pRoute_ID;
-	INSERT INTO seats_avail values(pRoute_ID, pDep_Date, vFlightSegNo, 'E', vEconomyClass, 0);
-  INSERT INTO seats_avail values(pRoute_ID, pDep_Date, vFlightSegNo, 'F', vFirstClass, 0);
-  INSERT INTO seats_avail values(pRoute_ID, pDep_Date, vFlightSegNo, 'B', vBusinessClass, 0);
-  COMMIT;
+	INSERT INTO flight_seg SELECT route_id,pDep_Date,FlightSegmentSeq.nextval,arr_time,dep_time,pFlight_ID FROM route_seg WHERE route_id=pRoute_ID;
+	COMMIT;
 EXCEPTION 
 	WHEN OTHERS THEN
         ROLLBACK;
