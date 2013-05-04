@@ -179,3 +179,19 @@ delete from seats_avail where seg_no = :old.seg_no;
 end;
 
 /
+
+CREATE or REPLACE PROCEDURE sp_insert_boarding_pass 
+    (p_ticket_no number, p_class_id varchar2, p_seg_no number) as
+    
+v_dep_date flight_seg.dep_date%type;
+v_route_id flight_seg.route_id%type;
+BEGIN
+    select dep_date, route_id into v_dep_date, v_route_id from flight_seg where seg_no = p_seg_no;
+    insert into boardingpass values(p_ticket_no, boardingPassSeq.nextval, p_class_id, v_dep_date, v_route_id, p_seg_no, null, null, null, null, null);
+EXCEPTION 
+	WHEN OTHERS THEN
+	raise_application_error(-20009, SQLERRM);
+END;
+
+/
+
