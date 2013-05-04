@@ -87,9 +87,9 @@ pDep_Time NUMBER,pAircraft_ID VARCHAR2,pFlight_ID NUMBER) IS
 vCons_Name VARCHAR(100);
 vAircraft_type_id varchar2(5);
 BEGIN
-        select aircr_type_id into vAircraft_type_id from aircraft where aircraft_id = pAircraft_ID;
+  select aircr_type_id into vAircraft_type_id from aircraft where aircraft_id = pAircraft_ID;
 	INSERT INTO flight values(pRoute_ID,pDep_Date,pArr_Time,pDep_Time,pAircraft_ID,vAircraft_type_id,pFlight_ID);
-	INSERT INTO flight_seg SELECT route_id,pDep_Date,FlightSegmentSeq.nextval,arr_time,dep_time,pFlight_ID FROM route_seg WHERE route_id=pRoute_ID;
+	INSERT INTO flight_seg SELECT route_id,pDep_Date,seg_no,arr_time,dep_time,pFlight_ID FROM route_seg WHERE route_id=pRoute_ID;
 	COMMIT;
 EXCEPTION 
 	WHEN OTHERS THEN
@@ -139,7 +139,6 @@ BEGIN
 		WHERE Flight_ID = pFlight_ID;
 	
 	DELETE FROM flight_seg WHERE route_ID = vRoute_ID;
-	
 	INSERT INTO flight_seg SELECT route_id,pDep_Date,seg_no,arr_time,dep_time,pFlight_ID FROM route_seg WHERE route_id=pRoute_ID;
 	COMMIT;
 EXCEPTION 
@@ -147,3 +146,34 @@ EXCEPTION
         ROLLBACK;
 	raise_application_error(-20008, SQLERRM);
 END;
+
+/
+
+CREATE OR REPLACE TRIGGER trg_Insert_Seats_avail
+AFTER INSERT ON FLIGHT_SEG
+FOR EACH ROW
+DECLARE
+vFlight_id flight.flight_id%type;
+vEconomySeats number;
+vBusinessSeats number;
+vFirstClassSeats number;
+BEGIN
+vFlight_id := :new.flight_id;
+select seats_qty_f, seats_qty_b, seats_qty_e into vFirstClassSeats, vBusinessSeats, vEconomySeats from aircraft 
+where aircraft_id = (select aircraft_id from FLIGHT where flight_id = vFlight_id);
+
+INSERT into SEATS_AVAIL values(:new.route_id, :new.dep_date, :new.seg_no, 'E', vEconomySeats, 0);
+INSERT into SEATS_AVAIL values(:new.route_id, :new.dep_date, :new.seg_no, 'B', vBusinessSeats, 0);
+INSERT into SEATS_AVAIL values(:new.route_id, :new.dep_date, :new.seg_no, 'F', vFirstClassSeats, 0);
+END;
+
+/
+
+create or replace trigger trg_delete_seats_avail
+after delete on flight_seg
+for each row
+Begin
+delete from seats_avail where seg_no = :old.seg_no;
+end;
+
+/
