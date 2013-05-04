@@ -188,6 +188,7 @@ v_route_id flight_seg.route_id%type;
 BEGIN
     select dep_date, route_id into v_dep_date, v_route_id from flight_seg where seg_no = p_seg_no;
     insert into boardingpass values(p_ticket_no, boardingPassSeq.nextval, p_class_id, v_dep_date, v_route_id, p_seg_no, null, null, null, null, null);
+    update seats_avail set seats_booked = seats_booked + 1 where class_id = p_class_id and seg_no = p_seg_no;
 EXCEPTION 
 	WHEN OTHERS THEN
 	raise_application_error(-20009, SQLERRM);
