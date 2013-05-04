@@ -51,6 +51,10 @@ GET     /flight/:id/update          controllers.FlightController.update(id: Inte
 GET     /customer                   controllers.CustomerController.index
 GET     /customer/create            controllers.CustomerController.create
 GET     /customer/save              controllers.CustomerController.save
+GET     /customer/:id/edit          controllers.CustomerController.edit(id: String)
+GET     /customer/:id/update        controllers.CustomerController.update(id: String)
+GET     /customer/:id/delete        controllers.CustomerController.delete(id: String)
+
 
 GET     /booking                    controllers.BookingController.index
 GET     /booking/create             controllers.BookingController.create

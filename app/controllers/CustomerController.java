@@ -1,5 +1,8 @@
 package controllers;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import javax.persistence.PersistenceException;
 import models.Customer;
@@ -42,6 +45,35 @@ public class CustomerController extends Controller{
                 }
                 return badRequest(customer_create.render(filledForm));
             }
+        }
+        return ok(customer_index.render(Customer.all()));
+    }
+    
+    
+    public static Result edit(String id) {
+        Customer cust = Customer.find.ref(id);
+        return ok(customer_edit.render(cust, customerForm.fill(cust)));
+    }
+
+    public static Result update(String id) {
+        Form<Customer> filledForm = customerForm.bindFromRequest();
+        if (filledForm.hasErrors()) {
+            flash("error", "There were errors in the form:");
+            Customer cust = Customer.find.ref(id);
+            return badRequest(customer_edit.render(cust, filledForm));
+        } else {
+            Customer.update(filledForm.get().cust_id, filledForm.get().cust_surname, filledForm.get().cust_credlim,
+                    filledForm.get().cust_addr1, filledForm.get().cust_addr2,filledForm.get().cust_addr3,
+                    filledForm.get().cust_inits,filledForm.get().cust_title,filledForm.get().cust_phone);
+        }
+        return ok(customer_index.render(Customer.all()));
+    }
+
+    public static Result delete(String id) {
+        try {
+            Customer.deleteCustomer(id);
+        } catch (SQLException e) {
+            flash("error", errorMessages.get(e.getMessage().substring(0, 9)));
         }
         return ok(customer_index.render(Customer.all()));
     }

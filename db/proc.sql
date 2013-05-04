@@ -195,3 +195,23 @@ END;
 
 /
 
+create or replace 
+PROCEDURE SP_DELETE_CUSTOMER(pCustomer_id VARCHAR2) AS
+child_exists exception;
+vBoardingPassCount NUMBER;
+pragma exception_init (child_exists , -02292);
+begin
+--Check if the customer has any boarding pass issued
+  SELECT COUNT(BP.BPASS_NO) INTO vBoardingPassCount
+  FROM boardingpass BP 
+  INNER JOIN ticket T ON bp.ticket_no=t.ticket_no 
+  WHERE t.cust_id = pCustomer_id AND bp.dep_date > sysdate;
+  IF vBoardingPassCount > 0 THEN
+    raise child_exists;
+  Else  
+    delete from CUSTOMER where cust_id = pCustomer_id;
+  END IF;
+exception
+   when child_exists  then
+      raise_application_error(-20010, ': Cannot delete customer. Boarding pass issued'); 
+end;

@@ -62,4 +62,28 @@ public class Customer extends Model{
     public static void create(Customer cust) throws PersistenceException {
         cust.save();
     }
+    
+    public static void update(String cust_Id, String cust_Surname, Integer cust_Credlimit, String cust_Addr1, String cust_Addr2, 
+                    String cust_Addr3, String cust_Initials, String cust_Title, String cust_Phone) {
+        Customer cust = find.ref(cust_Id);
+        cust.cust_surname= cust_Surname;
+        cust.cust_credlim = cust_Credlimit;
+        cust.cust_addr1 = cust_Addr1;
+        cust.cust_addr2 = cust_Addr2;
+        cust.cust_addr3 = cust_Addr3;
+        cust.cust_inits = cust_Initials;
+        cust.cust_title = cust_Title;
+        cust.cust_phone = cust_Phone;
+        cust.update();
+    }
+    
+    public static void deleteCustomer(String cust_Id) throws SQLException {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        connection = play.db.DB.getConnection();
+        String storedProc = "{call SP_DELETE_CUSTOMER(?)}";
+        callableStatement = connection.prepareCall(storedProc);
+        callableStatement.setString(1, cust_Id);
+        callableStatement.executeUpdate();
+    }
 }
