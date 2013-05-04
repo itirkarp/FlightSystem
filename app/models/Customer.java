@@ -1,9 +1,6 @@
 
 package models;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
