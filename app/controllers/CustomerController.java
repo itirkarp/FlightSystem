@@ -16,7 +16,7 @@ public class CustomerController extends Controller{
     static final HashMap<String, String> errorMessages = new HashMap<String, String>() {
         {
             put("CUST_PK", "Cannot create customer. This customer ID already exists.");
-            put("ORA-20010", "Cannot delete customer. Boarding pass issued.");
+            put("ORA-20010", "Cannot delete customer. A boarding pass has been issued for this customer.");
         }
     };
     

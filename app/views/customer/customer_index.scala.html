@@ -9,19 +9,15 @@
     <table class="table table-striped index-table" id="data-table">
         <thead></thead>
         <tbody>
-        <th>Customer ID</th><th>Surname</th><th>Credit</th>
-        <th>Address1</th><th>Address2</th><th>Address3</th>
-        <th>Initial</th><th>Title</th><th>Phone</th>
+        <th>Customer</th><th>Title</th><th>Initial</th><th>Surname</th>
+        <th>Address</th><th>Phone</th><th></th><th></th>
         @for(cust <- customers) {
             <tr>
                 <td>@cust.cust_id</td>
-                <td>@cust.cust_surname</td>
-                <td>@cust.cust_credlim</td>
-                <td>@cust.cust_addr1</td>
-                <td>@cust.cust_addr2</td>
-                <td>@cust.cust_addr3</td>
-                <td>@cust.cust_inits</td>
                 <td>@cust.cust_title</td>
+                <td>@cust.cust_inits</td>
+                <td>@cust.cust_surname</td>
+                <td>@cust.cust_addr1, @cust.cust_addr2, @cust.cust_addr3</td>
                 <td>@cust.cust_phone</td>
                 <td>
                     <a href=@routes.CustomerController.edit(cust.cust_id)>
