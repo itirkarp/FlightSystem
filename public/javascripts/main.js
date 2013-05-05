@@ -27,7 +27,7 @@ function bindShowSegment() {
             $(this).html("<i class=\"icon-arrow-up\"></i>Hide");
         } else {
             $(element).addClass("hide");
-            $(this).html("<i class=\"icon-arrow-down\"></i>Segments");
+            $(this).html("<i class=\"icon-arrow-down\"></i>Show");
         }
     });
 }

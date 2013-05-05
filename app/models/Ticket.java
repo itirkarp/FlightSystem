@@ -4,6 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 import play.db.ebean.*;
 
@@ -21,6 +22,9 @@ public class Ticket extends Model {
     public String pass_title;
     public String pass_phone;
     public String staff_ind;
+    
+    @OneToMany(mappedBy = "ticket")
+    public List<BoardingPass> boardingPasses;
     
     public static Finder<String, Ticket> find = new Finder(String.class, Ticket.class);
     public static Connection connection = play.db.DB.getConnection();
@@ -43,6 +47,10 @@ public class Ticket extends Model {
         this.pass_title = pass_title;
         this.pass_phone = pass_phone;
         this.staff_ind = "N";
+    }
+    
+    public static List<Ticket> all() {
+        return find.all();
     }
 
     public static void create(Ticket ticket) throws PersistenceException {
