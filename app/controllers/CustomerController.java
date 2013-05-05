@@ -1,7 +1,5 @@
 package controllers;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import javax.persistence.PersistenceException;
@@ -18,6 +16,7 @@ public class CustomerController extends Controller{
     static final HashMap<String, String> errorMessages = new HashMap<String, String>() {
         {
             put("CUST_PK", "Cannot create customer. This customer ID already exists.");
+            put("ORA-20010", "Cannot delete customer. Boarding pass issued.");
         }
     };
     
@@ -71,7 +70,7 @@ public class CustomerController extends Controller{
 
     public static Result delete(String id) {
         try {
-            Customer.deleteCustomer(id);
+            Customer.deleteCustomer(id);  
         } catch (SQLException e) {
             flash("error", errorMessages.get(e.getMessage().substring(0, 9)));
         }
