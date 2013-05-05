@@ -1,4 +1,4 @@
-@()
+@(airports: List[Airport], customers: List[Customer])
 
 @import helper._
 @implicitFieldConstructor = @{ FieldConstructor(common.twitterBootstrapInput.render) }
@@ -8,16 +8,14 @@
     @form(routes.BookingController.flights()) {
         <div class="row-fluid">
             <div class="span6">
-                <div class="control-group">
-                    <label class="control-label">Origin</label>
+                <div class="control-group">                   
                     <div class="controls">
-                        <input type="text" id="origin" name="origin">
+                        @common.airportList("origin", "Origin", airports, "", "")
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label">Destination</label>
                     <div class="controls">
-                        <input type="text" id="destination" name="destination">
+                        @common.airportList("destination", "Destination", airports, "", "")
                     </div>
                 </div>
                 <div class="control-group">
@@ -27,16 +25,17 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label">Class</label>
+                    <label class="control-label" for= "class" >Class</label>
                     <div class="controls">
-                        <input type="text" id="class" name="class">
+                        <select id="class" name="class">
+                            <option value="E">Economy class</option>
+                            <option value="B">Business class</option>
+                            <option value="F">First class</option>
+                        </select>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label">Customer ID</label>
-                    <div class="controls">
-                        <input type="text" id="customer-id" name="customer-id">
-                    </div>
+                    @common.customerList("customer-id", "Customer ID", customers, "", "")
                 </div>                
                 <div class="form-actions">
                     <button id="get-flights" type="submit" class="btn btn-primary">Get Flights</button>

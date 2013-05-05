@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import models.Airport;
 import models.Customer;
 import models.FlightInfo;
 import models.Flight;
@@ -24,7 +25,7 @@ public class BookingController extends Controller {
     }
 
     public static Result create() {
-        return ok(booking_create.render());
+        return ok(booking_create.render(Airport.all(), Customer.all()));
     }
 
     public static Result save() {

@@ -1,4 +1,4 @@
-@(id: String, label: String, airports: List[Airport], form: Form[_ <: Object], className: String, value: String)
+@(id: String, label: String, airports: List[Airport], className: String, value: String)
 
 <select name=@id id=@id class=@className>
     @for(airport <- airports) {
