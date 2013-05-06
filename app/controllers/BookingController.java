@@ -2,17 +2,16 @@ package controllers;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.SqlRow;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import models.Airport;
 import models.Customer;
 import models.FlightInfo;
 import models.Flight;
 import models.FlightSegment;
 import models.Ticket;
+import models.TicketInfo;
 import play.Logger;
 import play.data.DynamicForm;
 import play.mvc.*;
@@ -66,6 +65,17 @@ public class BookingController extends Controller {
                     row.getInteger("seats")));
         }
         return ok(flights.render(flightInfos));
+    }
+    
+    public static Result view(Integer ticket_no) {
+        List<SqlRow> rows = Ticket.findFullTicket(ticket_no);
+        List<TicketInfo> ticketInfos = new ArrayList<TicketInfo>();
+        for (SqlRow row : rows) {
+            ticketInfos.add(new TicketInfo(row.getDate("dep_date"), row.getString("airpt_id_from"), 
+                    row.getString("airpt_id_to"), row.getString("route_id"), row.getInteger("dep_time"), 
+                    row.getInteger("arr_time"), row.getString("class_id"), row.getInteger("bpass_no")));
+        }
+        return ok(booking_view.render(Ticket.find.ref(ticket_no), ticketInfos));
     }
 
 }

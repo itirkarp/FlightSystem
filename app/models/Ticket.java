@@ -1,5 +1,7 @@
 package models;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.SqlRow;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -26,7 +28,7 @@ public class Ticket extends Model {
     @OneToMany(mappedBy = "ticket")
     public List<BoardingPass> boardingPasses;
     
-    public static Finder<String, Ticket> find = new Finder(String.class, Ticket.class);
+    public static Finder<Integer, Ticket> find = new Finder(Integer.class, Ticket.class);
     public static Connection connection = play.db.DB.getConnection();
     public static CallableStatement callableStatement = null;
 
@@ -64,6 +66,11 @@ public class Ticket extends Model {
         callableStatement.setString(2, class_id);
         callableStatement.setInt(3, seg_no);
         callableStatement.executeUpdate();        
+    }
+    
+    public static List<SqlRow> findFullTicket(Integer ticket_no) {
+        return Ebean.createSqlQuery("select dep_date, airpt_id_from, airpt_id_to, b.route_id, dep_time, arr_time, class_id, bpass_no from boardingpass b inner join route_seg r on r.seg_no = b.seg_no where ticket_no=:no")
+                            .setParameter("no", ticket_no).findList();
     }
 
 }

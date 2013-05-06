@@ -22,7 +22,7 @@
                 <td>@ticket.pass_surname</td>
                 <td>@ticket.pass_phone</td>
                 <td>
-                    <a href=""><i class="icon-pencil"></i> Edit</a>
+                    <a href=@routes.BookingController.view(ticket.ticket_no)><i class="icon-plane"></i> View</a>
                 </td>
                 <td>
                     <a href="" path="" role="button" data-toggle="modal" data-target="#delete-modal" class="delete-link">

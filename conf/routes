@@ -55,11 +55,11 @@ GET     /customer/:id/edit          controllers.CustomerController.edit(id: Stri
 GET     /customer/:id/update        controllers.CustomerController.update(id: String)
 GET     /customer/:id/delete        controllers.CustomerController.delete(id: String)
 
-
 GET     /booking                    controllers.BookingController.index
 GET     /booking/create             controllers.BookingController.create
 GET     /booking/save               controllers.BookingController.save
 POST    /booking/flights            controllers.BookingController.flights
+GET     /booking/view               controllers.BookingController.view(id: Integer)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
