@@ -89,7 +89,7 @@ vAircraft_type_id varchar2(5);
 BEGIN
   select aircr_type_id into vAircraft_type_id from aircraft where aircraft_id = pAircraft_ID;
 	INSERT INTO flight values(pRoute_ID,pDep_Date,pArr_Time,pDep_Time,pAircraft_ID,vAircraft_type_id,pFlight_ID);
-	INSERT INTO flight_seg SELECT route_id,pDep_Date,seg_no,arr_time,dep_time,pFlight_ID FROM route_seg WHERE route_id=pRoute_ID;
+	INSERT INTO flight_seg SELECT route_id,pDep_Date,FlightSegmentSeq.nextval,arr_time,dep_time,pFlight_ID, seg_no FROM route_seg WHERE route_id=pRoute_ID;
 	COMMIT;
 EXCEPTION 
 	WHEN OTHERS THEN
@@ -140,8 +140,8 @@ BEGIN
 		aircr_type_id = vAircraft_type_id
 		WHERE Flight_ID = pFlight_ID;
 	
-	DELETE FROM flight_seg WHERE route_ID = vRoute_ID;
-	INSERT INTO flight_seg SELECT route_id,pDep_Date,seg_no,arr_time,dep_time,pFlight_ID FROM route_seg WHERE route_id=pRoute_ID;
+	DELETE FROM flight_seg WHERE Flight_ID = pFlight_ID;
+	INSERT INTO flight_seg SELECT route_id,pDep_Date,FlightSegmentSeq.nextval,arr_time,dep_time,pFlight_ID, seg_no FROM route_seg WHERE route_id=pRoute_ID;
 	COMMIT;
 EXCEPTION 
 	WHEN OTHERS THEN
@@ -179,15 +179,16 @@ delete from seats_avail where seg_no = :old.seg_no;
 end;
 
 /
-
-CREATE or REPLACE PROCEDURE sp_insert_boarding_pass 
-    (p_ticket_no number, p_class_id varchar2, p_seg_no number) as
+create or replace
+PROCEDURE sp_insert_boarding_pass 
+    (p_ticket_no number, p_class_id varchar2, p_seg_no number, p_route_seg_no number) as
     
 v_dep_date flight_seg.dep_date%type;
 v_route_id flight_seg.route_id%type;
 BEGIN
     select dep_date, route_id into v_dep_date, v_route_id from flight_seg where seg_no = p_seg_no;
-    insert into boardingpass values(p_ticket_no, boardingPassSeq.nextval, p_class_id, v_dep_date, v_route_id, p_seg_no, null, null, null, null, null);
+    insert into boardingpass (route_seg_no, ticket_no, bpass_no, class_id, dep_date, route_id, seg_no, seat_id, aircraft_id, check_in_time, status, confirmed_ind) 
+    values(p_route_seg_no, p_ticket_no, boardingPassSeq.nextval, p_class_id, v_dep_date, v_route_id, p_seg_no, null, null, null, null, null);
     update seats_avail set seats_booked = seats_booked + 1 where class_id = p_class_id and seg_no = p_seg_no;
 EXCEPTION 
 	WHEN OTHERS THEN
