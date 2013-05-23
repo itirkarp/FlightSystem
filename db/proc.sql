@@ -217,3 +217,23 @@ exception
    when child_exists  then
       raise_application_error(-20010, ': Cannot delete customer. Boarding pass issued'); 
 end;
+
+/
+
+create or replace
+procedure sp_delete_ticket(pTicket_no number) as
+cursor boardingpass is select seg_no,class_id from boardingpass where ticket_no = pTicket_no;
+begin
+  FOR eachpass in boardingpass
+    LOOP
+      dbms_output.put_line(eachpass.seg_no);
+      update seats_avail set seats_booked = seats_booked - 1 where seg_no =  eachpass.seg_no and class_id = eachpass.class_id;
+    END LOOP;
+  delete from boardingpass where ticket_no = pTicket_no;
+  delete from ticket where ticket_no = pTicket_no;
+exception 
+  WHEN OTHERS THEN
+	raise_application_error(-20013, SQLERRM);
+END;
+
+/

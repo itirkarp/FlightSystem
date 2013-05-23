@@ -25,7 +25,7 @@
                     <a href=@routes.BookingController.view(ticket.ticket_no)><i class="icon-plane"></i> View</a>
                 </td>
                 <td>
-                    <a href="" path="" role="button" data-toggle="modal" data-target="#delete-modal" class="delete-link">
+                    <a href="" path="@routes.BookingController.delete(ticket.ticket_no)" role="button" data-toggle="modal" data-target="#delete-modal" class="delete-link">
                         <i class="icon-remove"></i> Delete
                     </a>
                 </td>
@@ -46,4 +46,5 @@
         }
         </tbody>
     </table>
+    @common.delete_confirmation(routes.BookingController.index())
 }

@@ -28,6 +28,7 @@ public class BookingController extends Controller {
     }
 
     public static Result save() {
+        
         DynamicForm form = DynamicForm.form().bindFromRequest();
         Customer customer = Customer.find.ref(form.get("customer"));
         Ticket ticket = new Ticket(1000, new java.util.Date(), customer.cust_id, customer.cust_surname, 
@@ -35,18 +36,19 @@ public class BookingController extends Controller {
         Flight flight = Flight.find.ref(Integer.parseInt(form.get("flight_id")));
         // don't allow booking if seats are not available
         
-        Ebean.beginTransaction();
+//        Ebean.beginTransaction();
         Ticket.create(ticket);
         for (FlightSegment seg : flight.segments) {
+            Logger.error(seg.seg_no.toString());
             try {
                 Ticket.createBoardingPass(ticket.ticket_no, form.get("class_id"), seg.seg_no, seg.route_seg_no);
             } catch (SQLException ex) {
-                Ebean.rollbackTransaction();
+//                Ebean.rollbackTransaction();
                 flash("error", "Cannot create booking. A database error occurred: " + ex.getMessage());
                 return badRequest(booking_index.render(Ticket.all()));
             }
         }
-        Ebean.commitTransaction();
+//        Ebean.commitTransaction();
         return ok();
     }
     
@@ -76,6 +78,16 @@ public class BookingController extends Controller {
                     row.getInteger("arr_time"), row.getString("class_id"), row.getInteger("bpass_no")));
         }
         return ok(booking_view.render(Ticket.find.ref(ticket_no), ticketInfos));
+    }
+    
+    public static Result delete(Integer id) {
+        try {
+            Ticket.deleteTicket(id);
+        } catch (Exception e) {
+            //flash("error", errorMessages.get(e.getMessage().substring(0, 9)));
+        }
+//        return view(id);
+        return ok();
     }
 
 }

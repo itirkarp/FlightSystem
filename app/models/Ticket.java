@@ -74,4 +74,10 @@ public class Ticket extends Model {
                             .setParameter("no", ticket_no).findList();
     }
 
+    public static void deleteTicket(Integer id) throws SQLException {
+        String storedProc = "{call sp_delete_ticket(?)}";
+        callableStatement = connection.prepareCall(storedProc);
+        callableStatement.setInt(1, id);
+        callableStatement.executeUpdate();
+    }
 }
