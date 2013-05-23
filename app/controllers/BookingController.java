@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import models.Airport;
 import models.Customer;
-import models.FlightInfo;
 import models.Flight;
+import models.FlightInfo;
 import models.FlightSegment;
 import models.Ticket;
 import models.TicketInfo;
@@ -32,21 +32,21 @@ public class BookingController extends Controller {
         Customer customer = Customer.find.ref(form.get("customer"));
         Ticket ticket = new Ticket(1000, new java.util.Date(), customer.cust_id, customer.cust_surname, 
                 customer.cust_inits, customer.cust_title, customer.cust_phone);
-        // don't allow booking if seats are not available
-        // start transaction
-        Ticket.create(ticket);
         Flight flight = Flight.find.ref(Integer.parseInt(form.get("flight_id")));
+        // don't allow booking if seats are not available
+        
+        Ebean.beginTransaction();
+        Ticket.create(ticket);
         for (FlightSegment seg : flight.segments) {
             try {
                 Ticket.createBoardingPass(ticket.ticket_no, form.get("class_id"), seg.seg_no, seg.route_seg_no);
             } catch (SQLException ex) {
-                // do something to display it
-                // rollback
-                Logger.error("*********************************************");
-                Logger.error(ex.getMessage());
+                Ebean.rollbackTransaction();
+                flash("error", "Cannot create booking. A database error occurred: " + ex.getMessage());
+                return badRequest(booking_index.render(Ticket.all()));
             }
         }
-        //commit
+        Ebean.commitTransaction();
         return ok();
     }
     
