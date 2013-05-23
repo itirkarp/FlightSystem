@@ -9,3 +9,8 @@ Languages / tools / technologies used:
 - Oracle
 - Bootstrap
 - JQuery
+
+To run this application you need:
+1. VPN connection to the Swinburne network
+2. Play framework installed
+3. If you are running this with a fresh Oracle account, first run schema.sql and proc.sql on the new account, and change the credentials in the configuration file (application.conf) 
