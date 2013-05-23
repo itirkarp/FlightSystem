@@ -36,7 +36,7 @@ public class RouteController extends Controller {
     }
 
     public static Result edit(String id) {
-        Route route = Route.find.ref(id);
+        Route route = Route.findInSegmentOrder(id);
         return ok(route_edit.render(route, routeForm.fill(route), Airline.all(), Airport.all()));
     }
 

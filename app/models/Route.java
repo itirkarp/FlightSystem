@@ -1,5 +1,6 @@
 package models;
 
+import com.avaje.ebean.Ebean;
 import java.util.*;
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -46,6 +47,14 @@ public class Route extends Model {
     
     public static Finder<String, Route> find = new Finder(String.class, Route.class);
 
+    public static Route findInSegmentOrder(String id) {
+        return Ebean.find(Route.class)
+                .fetch("segments")
+                .where().eq("route_id", id)
+                .orderBy("segments.seg_no")
+                .findList().get(0);
+    }
+    
     public static List<Route> all() {
         return find.all();
     }
