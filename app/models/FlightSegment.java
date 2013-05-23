@@ -13,6 +13,7 @@ public class FlightSegment extends Model {
     public Date dep_date;
     public Integer arr_time;
     public Integer dep_time;
+    public Integer route_seg_no;
     
     @ManyToOne
     @JoinColumn(name="flight_id")

@@ -38,7 +38,7 @@ public class BookingController extends Controller {
         Flight flight = Flight.find.ref(Integer.parseInt(form.get("flight_id")));
         for (FlightSegment seg : flight.segments) {
             try {
-                Ticket.createBoardingPass(ticket.ticket_no, form.get("class_id"), seg.seg_no);
+                Ticket.createBoardingPass(ticket.ticket_no, form.get("class_id"), seg.seg_no, seg.route_seg_no);
             } catch (SQLException ex) {
                 // do something to display it
                 // rollback

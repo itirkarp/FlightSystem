@@ -59,17 +59,18 @@ public class Ticket extends Model {
         ticket.save();
     }
     
-    public static void createBoardingPass(Integer ticket_no, String class_id, Integer seg_no) throws SQLException {
-        String storedProc = "{call sp_insert_boarding_pass(?,?,?)}";
+    public static void createBoardingPass(Integer ticket_no, String class_id, Integer seg_no, Integer route_seg_no) throws SQLException {
+        String storedProc = "{call sp_insert_boarding_pass(?,?,?,?)}";
         callableStatement = connection.prepareCall(storedProc);
         callableStatement.setInt(1, ticket_no);
         callableStatement.setString(2, class_id);
         callableStatement.setInt(3, seg_no);
+        callableStatement.setInt(4, route_seg_no);
         callableStatement.executeUpdate();        
     }
     
     public static List<SqlRow> findFullTicket(Integer ticket_no) {
-        return Ebean.createSqlQuery("select dep_date, airpt_id_from, airpt_id_to, b.route_id, dep_time, arr_time, class_id, bpass_no from boardingpass b inner join route_seg r on r.seg_no = b.seg_no where ticket_no=:no")
+        return Ebean.createSqlQuery("select dep_date, airpt_id_from, airpt_id_to, b.route_id, dep_time, arr_time, class_id, bpass_no from boardingpass b inner join route_seg r on r.seg_no = b.route_seg_no where ticket_no=:no")
                             .setParameter("no", ticket_no).findList();
     }
 

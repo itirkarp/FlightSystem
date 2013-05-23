@@ -320,6 +320,9 @@ alter table boardingpass add (constraint BPASS_PK primary key(bpass_no));
 -- increasing the capacity of bpass_no
 Alter table boardingpass MODIFY bpass_no number(4,0);
 
+-- add route_seg_no everywhere
+alter table flight_seg add route_seg_no NUMBER(2,0) NOT  NULL;
+alter table boardingpass add route_seg_no NUMBER(2,0) NOT  NULL;
 
 -----------------------------------------------------------------------------------------
 -- END changes made by us to the case study schema
