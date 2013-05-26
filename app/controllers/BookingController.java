@@ -39,7 +39,6 @@ public class BookingController extends Controller {
 //        Ebean.beginTransaction();
         Ticket.create(ticket);
         for (FlightSegment seg : flight.segments) {
-            Logger.error(seg.seg_no.toString());
             try {
                 Ticket.createBoardingPass(ticket.ticket_no, form.get("class_id"), seg.seg_no, seg.route_seg_no);
             } catch (SQLException ex) {
@@ -83,8 +82,8 @@ public class BookingController extends Controller {
     public static Result delete(Integer id) {
         try {
             Ticket.deleteTicket(id);
-        } catch (Exception e) {
-            //flash("error", errorMessages.get(e.getMessage().substring(0, 9)));
+        } catch (SQLException e) {
+            flash("error", "An unexpected error occured: " + e.getMessage());
         }
         return ok(booking_index.render(Ticket.all()));
     }

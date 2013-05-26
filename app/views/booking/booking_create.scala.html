@@ -29,7 +29,10 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    @common.customerList("customer-id", "Customer ID", customers, "", "")
+                    <label class="control-label" for= "class" >Customer</label>
+                    <div class="controls">
+                        @common.customerList("customer-id", "Customer ID", customers, "", "")
+                    </div>
                 </div>                
                 <div class="form-actions">
                     <button id="get-flights" type="submit" class="btn btn-primary">Get Flights</button>

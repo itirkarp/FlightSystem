@@ -40,10 +40,15 @@ public class FlightController extends Controller {
             flash("error", "There were errors in the form:");
             return badRequest(flight_create.render(filledForm, Route.all(), AircraftType.all(), Aircraft.all()));
         } 
+        Flight flight = filledForm.get();
+        if (flight.dep_date.before(new Date())) {
+            flash("error", "The departure date of the flight must be after the current date");
+            return badRequest(flight_create.render(filledForm, Route.all(), AircraftType.all(), Aircraft.all()));
+        }
         try {
             Date dep_date = new SimpleDateFormat("M/d/y", Locale.ENGLISH).parse(filledForm.data().get("dep_date"));
             SimpleDateFormat format = new SimpleDateFormat("u");
-            Route route = Route.find.ref(filledForm.data().get("route_id"));
+            Route route = Route.find.ref(flight.route_id);
             if (!format.format(dep_date).equals(route.day_no.toString())) {
                 flash("error", "The day of the week of the flight should match the day of the route.");
                 return badRequest(flight_create.render(filledForm, Route.all(), AircraftType.all(), Aircraft.all()));
@@ -53,7 +58,7 @@ public class FlightController extends Controller {
             return badRequest(flight_create.render(filledForm, Route.all(), AircraftType.all(), Aircraft.all()));
         }
         try {
-            Flight.create(filledForm.get());
+            Flight.create(flight);
         } catch (SQLException e) {
             String[] temp = e.getMessage().split("S1784498.");
             if (temp.length > 1) {

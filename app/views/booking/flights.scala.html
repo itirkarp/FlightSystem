@@ -11,7 +11,11 @@
                 <td>@flight.dep_time</td>
                 <td>@flight.arr_time</td>
                 <td>@flight.seats_avail</td>
-                <td><a class="btn book" href="javascript:void(0)">Book <i class="icon-ok"></i></a></td>
+                @if(flight.seats_avail == 0) {
+                    <td>No Seats Available</td>
+                } else {
+                    <td><a class="btn book" href="javascript:void(0)">Book <i class="icon-ok"></i></a></td>
+                }
             </tr>
         }
     </tbody>
