@@ -23,6 +23,7 @@ public class FlightController extends Controller {
             put("FLIT_PK", "Cannot save flight. This flight already exists.");
             put("FLIT_FOR", "Cannot save flight. Route ID does not exist.");
             put("FLSG_PK", "Cannot save flight. Please reset the Flight Segment sequence.");
+            put("ORA-20006", "Cannot delete this flight. One or more tickets have already been purchased.");
         }
     };
 

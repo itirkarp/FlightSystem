@@ -26,7 +26,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href="" path=@routes.FlightController.delete(flight.flight_id) role="button" data-toggle="modal" data-target="#delete-modal" class="delete-link">
+                    <a href="" displayname=@flight.flight_id path=@routes.FlightController.delete(flight.flight_id) role="button" data-toggle="modal" data-target="#delete-modal" class="delete-link">
                         <i class="icon-remove"></i> Delete
                     </a>
                 </td>
@@ -45,5 +45,5 @@
         }
         </tbody>
     </table>
-    @common.delete_confirmation(routes.FlightController.index())
+    @common.delete_confirmation(routes.FlightController.index(), "Flight")
 }

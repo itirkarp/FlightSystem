@@ -18,12 +18,13 @@ public class RouteController extends Controller {
     static Form<Route> routeForm = Form.form(Route.class);
     static final HashMap<String, String> errorMessages = new HashMap<String, String>() {
         {
-            put("ROUT_PK", "Cannot save route. This route already exists");
-            put("ROUT_FROM", "Cannot save route. The source airport does not exist");
-            put("ROUT_TO", "Cannot save route. The destination airport does not exist");
-            put("ROUT_OPERATED_BY", "Cannot save route. The airline does not exist");
-            put("RTSG_TO", "Cannot save route segments. One of the destination airports does not exist");
-            put("RTSG_FROM", "Cannot save route segments. One of the source airports does not exist");
+            put("ROUT_PK", "Cannot save route. This route already exists.");
+            put("ROUT_FROM", "Cannot save route. The source airport does not exist.");
+            put("ROUT_TO", "Cannot save route. The destination airport does not exist.");
+            put("ROUT_OPERATED_BY", "Cannot save route. The airline does not exist.");
+            put("RTSG_TO", "Cannot save route segments. One of the destination airports does not exist.");
+            put("RTSG_FROM", "Cannot save route segments. One of the source airports does not exist.");
+            put("FLIT_FOR", "Cannot delete this route. A flight has already been scheduled for it.");
         }
     };
 
@@ -81,7 +82,19 @@ public class RouteController extends Controller {
     }
 
     public static Result delete(String id) {
-        Route.find.ref(id).delete();
+        try {
+            Route.find.ref(id).delete();
+        } catch (Exception e){
+            String[] temp = e.getMessage().split("S1784498.");
+            if (temp.length > 1) {
+                temp = temp[1].split("\\) violated");
+                String constraintName = temp[0];
+                flash("error", errorMessages.get(constraintName));
+            } else {
+                flash("error", "Cannot delete route. A database error occurred: " + e.getMessage());
+            }
+            return badRequest(route_index.render(Route.all()));
+        }
         return ok(route_index.render(Route.all()));
     }
 

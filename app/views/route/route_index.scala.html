@@ -1,6 +1,7 @@
 @(routeList: List[Route])
 
 @main("EasyFly") {
+    @common.error()
     <div id="search">
         <div class="span6"></div>
         <div class="span6"><a href=@routes.RouteController.create() class="btn btn-primary pull-right">New Route</a></div>
@@ -33,7 +34,7 @@
                     <a href=@routes.RouteController.edit(route.route_id)><i class="icon-pencil"></i> Edit</a>
                 </td>
                 <td>
-                    <a href="" path=@routes.RouteController.delete(route.route_id) role="button" data-toggle="modal" data-target="#delete-modal" class="delete-link">
+                    <a href="" displayname=@route.route_id path=@routes.RouteController.delete(route.route_id) role="button" data-toggle="modal" data-target="#delete-modal" class="delete-link">
                         <i class="icon-remove"></i> Delete
                     </a>
                 </td>
@@ -52,5 +53,5 @@
         }
         </tbody>
     </table>
-    @common.delete_confirmation(routes.RouteController.index())
+    @common.delete_confirmation(routes.RouteController.index(), "Route")
 }

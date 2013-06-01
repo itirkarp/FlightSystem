@@ -25,7 +25,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href="" path=@routes.CustomerController.delete(cust.cust_id) role="button" data-toggle="modal" data-target="#delete-modal" class="delete-link">
+                    <a href="" displayname=@cust.cust_id path=@routes.CustomerController.delete(cust.cust_id) role="button" data-toggle="modal" data-target="#delete-modal" class="delete-link">
                         <i class="icon-remove"></i> Delete
                     </a>
                 </td>
@@ -33,5 +33,5 @@
         }
         </tbody>
     </table>
-    @common.delete_confirmation(routes.CustomerController.index())
+    @common.delete_confirmation(routes.CustomerController.index(), "Customer")
 }

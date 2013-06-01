@@ -68,7 +68,7 @@ begin
   delete from Flight where flight_id = pFlight_id;
 exception
    when child_exists  then
-      raise_application_error(-20006, ': Cannot delete flight. A flight segment exists for this flight .'); 
+      raise_application_error(-20006, ': Cannot delete flight. A dependency exists for this flight .'); 
 end;
 
 /

@@ -4,6 +4,7 @@ $(document).ready(function(){
     
     $(".delete-link").click(function(e){
         e.preventDefault();
+        $("#deleting-name").html($(this).attr("displayname"));
         $("#delete").attr("href", $(this).attr("path"));
     });
     
