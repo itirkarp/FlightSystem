@@ -70,7 +70,7 @@ public class Ticket extends Model {
     }
     
     public static List<SqlRow> findFullTicket(Integer ticket_no) {
-        return Ebean.createSqlQuery("select dep_date, airpt_id_from, airpt_id_to, b.route_id, dep_time, arr_time, class_id, bpass_no from boardingpass b inner join route_seg r on r.seg_no = b.route_seg_no where ticket_no=:no")
+        return Ebean.createSqlQuery("select dep_date, airpt_id_from, airpt_id_to, b.route_id, dep_time, arr_time, class_id, bpass_no from boardingpass b inner join route_seg r on r.seg_no = b.route_seg_no where ticket_no=:no order by bpass_no")
                             .setParameter("no", ticket_no).findList();
     }
 

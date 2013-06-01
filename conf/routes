@@ -58,7 +58,7 @@ GET     /booking                    controllers.BookingController.index
 GET     /booking/create             controllers.BookingController.create
 GET     /booking/save               controllers.BookingController.save
 POST    /booking/flights            controllers.BookingController.flights
-GET     /booking/view               controllers.BookingController.view(id: Integer)
+GET     /booking/:id/view           controllers.BookingController.view(id: Integer)
 GET     /booking/:id/delete         controllers.BookingController.delete(id: Integer)
 
 # Map static resources from the /public folder to the /assets URL path
