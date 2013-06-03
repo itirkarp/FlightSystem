@@ -60,8 +60,8 @@ function bindAddSegment() {
         dest.attr("id","segments[" + n + "].airpt_id_to");
         dest.attr("class", "input-small");
         
-        $('table > tbody:last').append('<tr><td><input type="text" class="input-small" name="segments[' + n + '].arr_time" id="segments[' + n + '].arr_time"></td>' 
-            + '<td><input type="text" class="input-small" name="segments[' + n + '].dep_time" id="segments[' + n + '].dep_time"></td>' 
+        $('table > tbody:last').append('<tr><td><input type="text" class="input-small" name="segments[' + n + '].dep_time" id="segments[' + n + '].dep_time"></td>' 
+            + '<td><input type="text" class="input-small" name="segments[' + n + '].arr_time" id="segments[' + n + '].arr_time"></td>' 
             + '<td>' + $('<div>').append(origin).html() + '</td>' 
             + '<td>' + $('<div>').append(dest).html() + '</td>' 
             + '<td><a class="btn delete-segment"><i class="icon-remove"></i> Delete</a></td></tr>');
